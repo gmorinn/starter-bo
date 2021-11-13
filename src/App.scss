@@ -1,0 +1,15 @@
+body {
+    margin: 0;
+    padding: 30px;
+}
+
+textarea:hover, 
+input:hover, 
+textarea:active, 
+input:active, 
+textarea:focus, 
+input:focus {
+    outline:0px !important;
+    -webkit-appearance:none;
+    box-shadow: none !important;
+}
