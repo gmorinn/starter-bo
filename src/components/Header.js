@@ -1,7 +1,6 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import { AppBar, Toolbar, Typography } from '@mui/material';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import useRouter from '../Hooks/useRouter'
 import { useAuth } from '../Hooks/useAuth'
 import WhatshotIcon from '@mui/icons-material/Whatshot';
@@ -12,7 +11,6 @@ import { currentUserAtom } from '../store/user';
 const Header = () => {
   const router = useRouter()
   const { logout } = useAuth()
-  const cartHidden = useRecoilValue(cartHiddenAtom)
   const [currentUser, setCurrentUser] = useRecoilState(currentUserAtom)
 
   const Logout = () => {
@@ -37,13 +35,8 @@ const Header = () => {
               <WhatshotIcon />
             </Typography>
               {
-                currentUser ? 
-                <div className="text-dark mx-auto" style={{cursor: 'pointer'}} onClick={Logout}>Logout</div>
-                  :
-                  <NavLink exact className="text-decoration-none mx-3 text-dark" to="/sign">Sign</NavLink>
+                currentUser && <div className="text-dark mx-auto" style={{cursor: 'pointer'}} onClick={Logout}>Logout</div>
               }
-            <div style={{cursor: 'pointer'}}><CartIcon /></div>
-            { cartHidden ? null : <CartDropdown />}
         </Toolbar>
       </AppBar>
   );

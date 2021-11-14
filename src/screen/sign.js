@@ -1,18 +1,21 @@
 import React, { lazy } from "react";
-import { Grid } from '@mui/material';
-const SignIn = lazy(() => import("../components/sign/SignIn"))
-const SignUp = lazy(() => import( "../components/sign/SignUp"))
+import { Grid, Card, CardContent } from '@mui/material';
+import WhatshotIcon from '@mui/icons-material/Whatshot';
+
+const Login = lazy(() => import("../components/auth/Login"))
 
 
 const Sign = () => {
     return (
         <>
-            <Grid container rowSpacing={5} columnSpacing={{ xs: 2, sm: 5, md: 10, xl: 20 }}>
-                <Grid item md={6} sx={{ width: '75%' }}>
-                    <SignIn />
-                </Grid>
-                <Grid item md={6} sx={{ width: '75%' }}>
-                    <SignUp />
+            <Grid container className="justify-content-center">
+                <Grid sm={10} md={8} lg={6} className="min-vh-100" sx={{ width: '100%' }}>
+                    <Card className="border border-dark">
+                        <WhatshotIcon sx={{ fontSize: 40 }} className="mt-5 w-100 d-flex justify-content-center"/>
+                        <CardContent>
+                            <Login />
+                        </CardContent>
+                    </Card>
                 </Grid>
             </Grid>
         </>

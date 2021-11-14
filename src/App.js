@@ -2,7 +2,6 @@ import React, { lazy, useEffect } from "react";
 import { Container } from '@mui/material';
 import { Switch, Route, Redirect } from "react-router-dom";
 import './App.scss'
-import Header from "./components/Header";
 import { useAuth } from "./Hooks/useAuth";
 import { useApi } from "./Hooks/useApi";
 import { useRecoilState } from "recoil";
@@ -35,14 +34,13 @@ const App = () => {
   return (
     <>
       <Container className="mt-5" maxWidth="xl">
-          <Header />
           <Switch>
-                <Route exact path="/" component={Home} />
+                <PrivateRoute exact path="/" component={Home} />
                 <Route exact path="/sign" render={() => currentUser ? <Redirect to='/' /> : <Sign />} />
                 <Route component={NotFound} />
           </Switch>
         </Container>
-    </> 
+    </>
   )
 }
 
