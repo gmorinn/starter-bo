@@ -9,7 +9,7 @@ const Sign = () => {
     return (
         <>
             <Grid container className="justify-content-center">
-                <Grid sm={10} md={8} lg={6} className="min-vh-100" sx={{ width: '100%' }}>
+                <Grid item sm={10} md={8} lg={6} className="min-vh-100" sx={{ width: '100%' }}>
                     <Card className="border border-dark">
                         <WhatshotIcon sx={{ fontSize: 40 }} className="mt-5 w-100 d-flex justify-content-center"/>
                         <CardContent>

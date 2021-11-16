@@ -9,10 +9,10 @@ const Users = lazy(() => import('../components/Users/Users'));
 const Homepage = () => {
   return (
     <>
-      <Header />
+        <Header />
         <Route path="/" exact component={Users} />
         <RoutesUsers />
-      <Footer />
+        <Footer />
     </>
   )
 }
