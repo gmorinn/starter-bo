@@ -16,6 +16,7 @@ const Users = () => {
         setData([])
         Fetch(`/v1/bo/users`)
             .then(res => res?.success && res.users && res.users.length > 0 && setData(res.users))
+        // eslint-disable-next-line
     }, [])
 
     return (
