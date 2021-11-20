@@ -34,10 +34,10 @@ const App = () => {
 
   return (
       <Container className="mt-5" maxWidth="xl">
-            <Switch>
-                  <Route exac path="/sign" render={() => currentUser ? <Redirect to='/' /> : <Sign />} />
-                  <PrivateRoute exac path="/" component={Home} />
-            </Switch>
+          <Switch>
+              <Route exac path="/sign" render={() => currentUser ? <Redirect to='/' /> : <Sign />} />
+              <PrivateRoute exac path="/" component={Home} />
+          </Switch>
         </Container>
   )
 }
