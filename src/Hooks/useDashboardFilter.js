@@ -4,9 +4,7 @@ import { alpha } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 
-const DashboardFilter = props => {
-    const { numSelected, title } = props;
-
+const DashboardFilter = ({ numSelected, title, deleteItems }) => {
     return (
       <Toolbar
         sx={{
@@ -39,7 +37,7 @@ const DashboardFilter = props => {
         )}
   
         {numSelected > 0 ? (
-          <Tooltip title="Delete">
+          <Tooltip title="Delete" onClick={deleteItems}>
             <IconButton>
               <DeleteIcon />
             </IconButton>
