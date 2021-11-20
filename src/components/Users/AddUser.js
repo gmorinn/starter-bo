@@ -10,11 +10,11 @@ const AddUser = () => {
     return (
         <>
             <Card className="mb-3">
-				<h5>Nouvelle Utilisateur</h5>
-					<Button className="mx-2" onClick={() => router.push('/users')}>
-						Retour
-					</Button>
-				<CardContent className="bg-light">
+				<h5>New User</h5>
+				<Button className="mx-2" onClick={() => router.push('/users')}>
+					Retour
+				</Button>
+				<CardContent>
 					<FormUser add />
 				</CardContent>
 			</Card>

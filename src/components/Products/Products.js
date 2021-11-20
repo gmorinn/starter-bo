@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
+import { Box, Table, TableBody, TableCell, TableContainer, TableRow, Paper, Checkbox } from '@mui/material';
 import { useApi } from '../../Hooks/useApi';
 import * as sort from '../../Hooks/useSort'
 import Pagination from '../../Hooks/usePagination'
 import Header from '../../Hooks/useHeader'
+import { useHistory } from "react-router-dom";
 import DashboardFilter from '../../Hooks/useDashboardFilter';
 
 const headCells = [
@@ -43,6 +37,7 @@ const Products = () => {
 
   const [data, setData] = useState([])
   const { Fetch } = useApi()
+  const history = useHistory()
 
   const deleteItems = () => {
     Fetch("/v1/bo/products/remove", "PATCH", {tab: selected}, true)
@@ -88,6 +83,7 @@ const Products = () => {
             title="Products"
             numSelected={selected.length} 
             deleteItems={deleteItems}
+            add={() => history.push('/product/add')}
           />
           <TableContainer>
             <Table

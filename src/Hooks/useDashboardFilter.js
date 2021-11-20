@@ -1,10 +1,10 @@
 import React from "react";
-import { Toolbar, Typography, Tooltip, IconButton } from "@mui/material";
+import { Toolbar, Typography, Tooltip, IconButton, Button } from "@mui/material";
 import { alpha } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 
-const DashboardFilter = ({ numSelected, title, deleteItems }) => {
+const DashboardFilter = ({ numSelected, title, deleteItems, add }) => {
     return (
       <Toolbar
         sx={{
@@ -35,7 +35,9 @@ const DashboardFilter = ({ numSelected, title, deleteItems }) => {
             {title}
           </Typography>
         )}
-  
+        <Button variant="outlined" onClick={add}>
+          Add
+        </Button>
         {numSelected > 0 ? (
           <Tooltip title="Delete" onClick={deleteItems}>
             <IconButton>

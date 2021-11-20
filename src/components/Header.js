@@ -7,7 +7,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { toast } from 'react-toastify';
 import { currentUserAtom } from '../store/user';
 import Navbar from './Navbar';
-
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 
 const Header = () => {
   const router = useRouter()
@@ -44,6 +44,7 @@ const Header = () => {
               >
                 <MenuIcon />
               </IconButton>
+              <LocalFireDepartmentIcon sx={{ color: 'black', cursor: 'pointer' }}  onClick={() => router.push('/')}/>
               <Navbar open={isDrawerOpen} toggleDrawerHandler={() => setDrawerOpen(false)} />
             </Typography>
               {

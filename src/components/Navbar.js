@@ -3,7 +3,7 @@ import { withStyles } from '@mui/styles';
 import { Drawer, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import GroupIcon from '@mui/icons-material/Group';
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
 
 const styles = {
   list: {
@@ -16,7 +16,7 @@ const styles = {
 
 const Icon = ({ icon, text, redirect }) => {
   return (
-      <ListItemButton component={Link} to={redirect}>
+      <ListItemButton onClick={redirect}>
           <ListItemIcon>
               {icon}
           </ListItemIcon>
@@ -27,6 +27,7 @@ const Icon = ({ icon, text, redirect }) => {
 
 const Navbar = props => {
   const { classes } = props;
+  const history = useHistory()
 
   const sideList = () => (
     <div
@@ -35,8 +36,8 @@ const Navbar = props => {
       onClick={props.toggleDrawerHandler}
     >
       <List>
-        <Icon text="Users" icon={<GroupIcon />} redirect="users"/>
-        <Icon text="Products" icon={<ProductionQuantityLimitsIcon />} redirect="products"/>
+        <Icon text="Users" icon={<GroupIcon />} redirect={() => history.push("/users")} />
+        <Icon text="Products" icon={<ProductionQuantityLimitsIcon />} redirect={() => history.push("/products")} />
       </List>
     </div>
   );

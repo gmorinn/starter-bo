@@ -18,9 +18,9 @@ const EditProduct = () => {
     return (
         <>
             <Card className="mb-3">
-				<h5>Modifier produit</h5>
-                    <Button className="mx-2" onClick={() => router.push('/produit')}>
-                        Retour
+				<h5>Change Product</h5>
+                    <Button className="mx-2" onClick={() => router.push('/product')}>
+                        Go back
                     </Button>
 				<CardContent className="bg-light">
 					<FormProduct edit formData={data} />

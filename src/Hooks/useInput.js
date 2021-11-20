@@ -18,7 +18,7 @@ const useInput = (initialValue, name, type, placeholder, className, styles = {})
         name: name,
     }
 
-    return {bindInput, reset, bindHookForm}
+    return {bindInput, reset, bindHookForm, value, setValue}
 };
 
 export default useInput;

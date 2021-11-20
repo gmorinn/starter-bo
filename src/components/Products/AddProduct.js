@@ -10,11 +10,11 @@ const AddProduct = () => {
     return (
         <>
             <Card className="mb-3">
-				<h5>Nouveau produit</h5>
+				<h5>New product</h5>
 					<Button className="mx-2" onClick={() => router.push('/products')}>
-						Retour
+						Go back
 					</Button>
-				<CardContent className="bg-light">
+				<CardContent>
 					<FormProduct add />
 				</CardContent>
 			</Card>
