@@ -48,7 +48,7 @@ const headCells = [
 
 const Users = () => {
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('price');
+  const [orderBy, setOrderBy] = useState('firstname');
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -63,12 +63,12 @@ const Users = () => {
     // eslint-disable-next-line
   }, [])
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, id) => {
+    const selectedIndex = selected.indexOf(id);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -116,12 +116,12 @@ const Users = () => {
               {sort.stableSort(data, sort.getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = selected.indexOf(row.name) !== -1;;
+                  const isItemSelected = selected.indexOf(row.id) !== -1;;
                   const labelId = `enhanced-table-checkbox-${index}`;
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
+                      onClick={(event) => handleClick(event, row.id)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}

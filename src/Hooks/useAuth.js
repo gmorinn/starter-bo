@@ -217,7 +217,7 @@ function useProvideAuth() {
 
 	const lost = async email => {
 		setLoad(true)
-		return await fetch(`${api}/v1/web/lost`, {
+		return await fetch(`${api}/v1/bo/lost`, {
 			headers: {
 				"Authorization": `Bearer ${getOAuthToken()}`,
 				"Content-Type": "application/json"
@@ -239,7 +239,7 @@ function useProvideAuth() {
 
 	const newPassword = async (password, confirm, token) => {
 		setLoad(true)
-		return await fetch(`${api}/v1/web/password/${token}`, {
+		return await fetch(`${api}/v1/bo/password/${token}`, {
 			headers: {
 				"Authorization": `Bearer ${getOAuthToken()}`,
 				"Content-Type": "application/json"
@@ -261,7 +261,7 @@ function useProvideAuth() {
 	};
 
 	const getProfile = async (params) => {
-		let res = await fetch(`${api}/v1/web/profile/${params.id}`, {
+		let res = await fetch(`${api}/v1/bo/profile/${params.id}`, {
 			headers: {
 				Authorization: `Bearer ${getOAuthToken()}`,
 				jwtToken: `Bearer ${getAccessToken()}`,

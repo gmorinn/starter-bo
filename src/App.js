@@ -21,7 +21,7 @@ const App = () => {
   const { Fetch } = useApi()
 
   useEffect(() => {
-    user && user.id ? Fetch(`/v1/web/user/${user.id}`).then(res => {
+    user && user.id ? Fetch(`/v1/bo/user/${user.id}`).then(res => {
         if (res?.success && res.user) {
           setCurrentUser(res.user)
         } else {

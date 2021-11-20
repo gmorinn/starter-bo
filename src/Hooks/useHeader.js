@@ -14,7 +14,7 @@ const EnhancedTableHead = props => {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-          const newSelecteds = data.map((n) => n.name);
+          const newSelecteds = data.map((n) => n.id);
           setSelected(newSelecteds);
           return;
         }
