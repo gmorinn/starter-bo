@@ -7,7 +7,7 @@ const Footer = () => (
         <Grid item sm={6}>
             <p className="mb-0 text-600">
                 GM API <span className="d-none d-sm-inline-block">| </span>
-                <br className="d-sm-none" /> {new Date().getFullYear()} &copy; <a href="guillaume-morin.fr">GM</a>
+                <br className="d-sm-none" /> {new Date().getFullYear()} &copy; <a target="_blank" rel="noreferrer" href="https://guillaume-morin.fr">GM</a>
             </p>
         </Grid>
         <Grid item sm={6}>
