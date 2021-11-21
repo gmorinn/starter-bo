@@ -1,5 +1,5 @@
 import React, { lazy } from "react";
-import { Button, Card, CardContent } from "@mui/material";
+import { Button, Card, CardContent, Box } from "@mui/material";
 import useRouter from "../../Hooks/useRouter";
 
 const FormUser = lazy(() => import('./FormUser'))
@@ -10,10 +10,12 @@ const AddUser = () => {
     return (
         <>
             <Card className="mb-3">
-				<h5>New User</h5>
-				<Button className="mx-2" onClick={() => router.push('/users')}>
-					Retour
-				</Button>
+				<Box className="d-flex justify-content-between p-4">
+					<h5>New User</h5>
+					<Button className="mx-2 bg-dark" variant="contained" onClick={() => router.push('/users')}>
+						Go back
+					</Button>
+				</Box>
 				<CardContent>
 					<FormUser add />
 				</CardContent>

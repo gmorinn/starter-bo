@@ -33,8 +33,8 @@ const Header = () => {
   }
   return (
       <AppBar sx={{ backgroundColor: 'white'}} position="fixed">
-        <Toolbar>
-          <Typography variant="a" component="div" sx={{ flexGrow: 1, color: 'black', cursor: 'pointer' }}>
+        <Toolbar  sx={{ display: 'flex', justifyContent: 'space-between'}}>
+          <Typography variant="a" component="div" sx={{ color: 'black', cursor: 'pointer' }}>
               <IconButton
                 edge="start"
                 className=""
@@ -44,11 +44,11 @@ const Header = () => {
               >
                 <MenuIcon />
               </IconButton>
-              <LocalFireDepartmentIcon sx={{ color: 'black', cursor: 'pointer' }}  onClick={() => router.push('/')}/>
               <Navbar open={isDrawerOpen} toggleDrawerHandler={() => setDrawerOpen(false)} />
             </Typography>
+              <LocalFireDepartmentIcon sx={{ color: 'black', cursor: 'pointer' }}  onClick={() => router.push('/')}/>
               {
-                currentUser && <div className="text-dark mx-auto" style={{cursor: 'pointer'}} onClick={Logout}>Logout</div>
+                currentUser && <div className="text-dark" style={{cursor: 'pointer'}} onClick={Logout}>Logout</div>
               }
         </Toolbar>
       </AppBar>

@@ -1,5 +1,5 @@
 import React, { lazy, useEffect, useState } from "react";
-import { Button, Card, CardContent } from "@mui/material";
+import { Button, Card, CardContent, Box } from "@mui/material";
 import useRouter from "../../Hooks/useRouter";
 import { useApi } from "../../Hooks/useApi";
 
@@ -18,10 +18,12 @@ const EditUser = () => {
     return (
         <>
             <Card className="mb-3">
-				<h5>Modifier Utilisateur</h5>
-                    <Button className="mx-2" onClick={() => router.push('/users')}>
-                        Retour
-                    </Button>
+                <Box className="d-flex justify-content-between p-4">
+					<h5>Edit User</h5>
+					<Button className="mx-2 bg-dark" variant="contained" onClick={() => router.push('/users')}>
+						Retour
+					</Button>
+				</Box>
 				<CardContent className="bg-light">
 					<FormUser edit formData={data} />
 				</CardContent>
