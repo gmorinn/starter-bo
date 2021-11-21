@@ -14,7 +14,7 @@ const EditUser = () => {
 		!data && Fetch(`/v1/bo/user/${router.query.id}`, "GET").then(res => res?.success && setData(res.user))
 		// eslint-disable-next-line
 	}, [])
-
+	
     return (
         <>
             <Card className="mb-3">
@@ -24,7 +24,7 @@ const EditUser = () => {
 						Retour
 					</Button>
 				</Box>
-				<CardContent className="bg-light">
+				<CardContent>
 					<FormUser edit formData={data} />
 				</CardContent>
 			</Card>

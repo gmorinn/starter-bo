@@ -24,7 +24,7 @@ const EditProduct = () => {
 						Go back
 					</Button>
 				</Box>
-				<CardContent className="bg-light">
+				<CardContent>
 					<FormProduct edit formData={data} />
 				</CardContent>
 			</Card>

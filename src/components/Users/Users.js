@@ -54,9 +54,6 @@ const Users = () => {
   const deleteItems = () => {
       Fetch("/v1/bo/users/remove", "PATCH", {tab: selected}, true)
         .then(res => res?.success && setSelected([]))
-        .then(Fetch(`/v1/bo/users`)
-                .then(res => res?.success && res.users && res.users.length > 0 && setData(res.users))
-        )
     }
 
 
@@ -64,6 +61,7 @@ const Users = () => {
     setData([])
     Fetch(`/v1/bo/users`)
         .then(res => res?.success && res.users && res.users.length > 0 && setData(res.users))
+      return () => setData([])
     // eslint-disable-next-line
   }, [])
 

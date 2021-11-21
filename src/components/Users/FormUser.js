@@ -11,11 +11,14 @@ import useInput from "../../Hooks/useInput";
 import Loader from '../Loader'
 import PhoneInput from 'react-phone-input-2'
 import { useApi } from "../../Hooks/useApi";
+import useRouter from "../../Hooks/useRouter";
 import moment from 'moment'
 import 'react-phone-input-2/lib/material.css'
 
-const FormUser = () => {
+const FormUser = ({ add, edit, formData }) => {
     const { Fetch } = useApi()
+
+    const router = useRouter()
 
     const addUser = (data) => {
         Fetch('/v1/bo/user/add', "POST", data, true)
@@ -33,6 +36,7 @@ const FormUser = () => {
                 draggable: true,
                 progress: undefined,
             });
+            router.push('/users')
         }
     })
 
@@ -40,23 +44,30 @@ const FormUser = () => {
         firstname: yup.string().min(3).required(),
         lastname: yup.string().min(3).required(),
         email: yup.string().email().required(),
+        password: yup.string().required().min(7),
+        confirmPassword: yup.string().required().min(7)
+            .oneOf([yup.ref('password'), null], 'Password is different.'),
       });
 
     const { handleSubmit, control, formState: { errors } } = useForm({
         resolver: yupResolver(schema)
     });
 
-    const firstname = useInput("", "firstname", "text", "Firstname...", "w-100")
-    const lastname = useInput("", "lastname", "text", "Lastname...", "w-100")
-    const email = useInput("", "email", "email", "Email...", "w-100")
-    const [birthday, setBirthday] = useState(null);
-    const [phone, setPhone] = useState(null);
+    const firstname = useInput(formData ? formData.firstname : "", "firstname", "text", "Firstname...", "w-100")
+    const lastname = useInput(formData ? formData.lastname : "", "lastname", "text", "Lastname...", "w-100")
+    const email = useInput(formData ? formData.email : "", "email", "email", "Email...", "w-100")
+    const password = useInput("", "password", "password", "Password...", "w-100")
+    const confirmPassword = useInput("", "confirmPassword", "password", "Confirm password...", "w-100")
+    const [birthday, setBirthday] = useState(formData ? moment(formData.birthday) : null);
+    const [phone, setPhone] = useState(formData ? formData.phone : null);
 
     const onSubmit = data => mutate({ firstname: data.firstname,
                                 lastname: data.lastname,
                                 email: data.email,
                                 birthday: birthday ? moment(birthday).format('DD-MM-YYYY') : null,
-                                phone: "+"+phone,
+                                phone: phone ? "+"+phone : null,
+                                password: data.password,
+                                confirm_password: data.confirmPassword,
                             });
 
     return (
@@ -123,6 +134,33 @@ const FormUser = () => {
                             />
                         </FormControl>
                     </Grid>
+                    { add && 
+                        <>
+                            <Grid item md={6}>
+                                <FormControl className="mb-5 mt-5 w-100">
+                                    <Controller
+                                        {...password.bindHookForm}
+                                        control={control}
+                                        render={({ field }) => <Input {...field} {...password.bindInput} />}
+                                    />
+                                    {errors.password?.type === 'required' && <span className="text-danger">Required</span>}
+                                    {errors.password?.type === 'min' && <span className="text-danger">Too small</span>}
+                                </FormControl>
+                            </Grid>
+                            <Grid item md={6}>
+                                <FormControl className="mb-5 mt-5 w-100">
+                                    <Controller
+                                        {...confirmPassword.bindHookForm}
+                                        control={control}
+                                        render={({ field }) => <Input {...field} {...confirmPassword.bindInput} />}
+                                    />
+                                    {errors.confirmPassword?.type === 'required' && <span className="text-danger">Required</span>}
+                                    {errors.confirmPassword?.type === 'min' && <span className="text-danger">Too small</span>}
+                                    {errors.confirmPassword?.type === 'oneOf' && <span className="text-danger">Wrong password</span>}
+                            </FormControl>
+                            </Grid>
+                        </>
+                    }
                 </Grid>
 
 
