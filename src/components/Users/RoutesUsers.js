@@ -25,5 +25,5 @@ export const usersRoutes = {
 	to: '/users',
 	exact: true,
 	icon: 'home',
-	roles: ["root", "admin", "user"]
+	roles: ["root", "admin"]
 };

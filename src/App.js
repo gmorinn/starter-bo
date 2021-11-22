@@ -29,6 +29,7 @@ const App = () => {
           logout()
         }
     }) : setCurrentUser(null)
+    return () => setCurrentUser(null)
     // eslint-disable-next-line
   }, [user])
 

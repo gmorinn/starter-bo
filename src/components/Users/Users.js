@@ -38,6 +38,12 @@ const headCells = [
     disablePadding: false,
     label: 'Birthday',
   },
+  {
+    id: 'role',
+    numeric: true,
+    disablePadding: false,
+    label: 'Role',
+  },
 ];
 
 const Users = () => {
@@ -54,11 +60,15 @@ const Users = () => {
   const deleteItems = () => {
       Fetch("/v1/bo/users/remove", "PATCH", {tab: selected}, true)
         .then(res => res?.success && setSelected([]))
+        .then(() => listItem())
+    }
+    
+    const listItem = () => {
+      Fetch("/v1/bo/users")
+        .then(res => res.success && res.users && res.users.length > 0 && setData(res.users))
     }
 
-
   useEffect(() => {
-    setData([])
     Fetch(`/v1/bo/users`)
         .then(res => res?.success && res.users && res.users.length > 0 && setData(res.users))
       return () => setData([])
@@ -153,6 +163,7 @@ const Users = () => {
                       <TableCell align="right">{row.email}</TableCell>
                       <TableCell align="right">{row.phone}</TableCell>
                       <TableCell align="right">{row.birthday}</TableCell>
+                      <TableCell align="right">{row.role}</TableCell>
                     </TableRow>
                   );
                 })}

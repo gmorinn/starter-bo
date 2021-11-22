@@ -12,6 +12,7 @@ const EditProduct = () => {
 
     useEffect(() => {
 		!data && Fetch(`/v1/bo/product/${router.query.id}`, "GET").then(res => res?.success && setData(res.product))
+		return () => setData([])
 		// eslint-disable-next-line
 	}, [])
 

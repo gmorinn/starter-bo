@@ -42,10 +42,15 @@ const Products = () => {
   const deleteItems = () => {
     Fetch("/v1/bo/products/remove", "PATCH", {tab: selected}, true)
       .then(res => res?.success && setSelected([]))
+      .then(() => listItem())
+  }
+
+  const listItem = () => {
+    Fetch("/v1/bo/products")
+      .then(res => res.success && res.products && res.products.length > 0 && setData(res.products))
   }
 
   useEffect(() => {
-    setData([])
     Fetch(`/v1/bo/products`)
         .then(res => res?.success && res.products && res.products.length > 0 && setData(res.products))
     return () => setData([])

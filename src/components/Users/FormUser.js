@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { toast } from 'react-toastify';
 import { useMutation } from "react-query";
-import { Button, FormControl, Grid, Input, TextField } from '@mui/material';
+import { Button, FormControl, Grid, Input, Select, TextField, MenuItem } from '@mui/material';
 import { useForm, Controller } from "react-hook-form";
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { LocalizationProvider, DatePicker } from '@mui/lab';
@@ -45,6 +45,7 @@ const FormUser = ({ add, edit, formData }) => {
         lastname: yup.string().min(3).required(),
         email: yup.string().email().required(),
         password: yup.string().required().min(7),
+        role: yup.string().oneOf(["user", "pro", "admin"]).required(),
         confirmPassword: yup.string().required().min(7)
             .oneOf([yup.ref('password'), null], 'Password is different.'),
       });
@@ -58,14 +59,16 @@ const FormUser = ({ add, edit, formData }) => {
     const email = useInput(formData ? formData.email : "", "email", "email", "Email...", "w-100")
     const password = useInput("", "password", "password", "Password...", "w-100")
     const confirmPassword = useInput("", "confirmPassword", "password", "Confirm password...", "w-100")
+    const phone = useInput(null, "phone", "phone", "Phone number...", "w-100")
+    const role = useInput("user", "role", "text", "Role...", "w-100")
     const [birthday, setBirthday] = useState(formData ? moment(formData.birthday) : null);
-    const [phone, setPhone] = useState(formData ? formData.phone : null);
 
     const onSubmit = data => mutate({ firstname: data.firstname,
                                 lastname: data.lastname,
                                 email: data.email,
                                 birthday: birthday ? moment(birthday).format('DD-MM-YYYY') : null,
-                                phone: phone ? "+"+phone : null,
+                                phone: data.phone ? "+"+data.phone : null,
+                                role: data.role,
                                 password: data.password,
                                 confirm_password: data.confirmPassword,
                             });
@@ -126,12 +129,31 @@ const FormUser = ({ add, edit, formData }) => {
 
                     <Grid item md={6}>
                         <FormControl className="mb-5 mt-5 w-100">
-                            <PhoneInput
-                                value={phone}
-                                country={'fr'}
-                                onlyCountries={['fr', 're', 'be', 'yt', 'gf', 'pf', 'tf', 'mu']}
-                                onChange={newPhone => setPhone(newPhone)}
+                            <Controller
+                                    {...phone.bindHookForm}
+                                    country={'fr'}
+                                    onlyCountries={['fr', 're', 'be', 'yt', 'gf', 'pf', 'tf', 'mu']}
+                                    control={control}
+                                    render={({ field }) => <PhoneInput {...field} {...phone.bindInput} />}
+                                />
+                        </FormControl>
+                    </Grid>
+
+                    <Grid item md={6}>
+                        <FormControl className="mb-5 mt-5 w-100">
+                            <Controller
+                                id="demo-simple-select-standard"
+                                {...role.bindHookForm}
+                                control={control}
+                                render={({ field }) => 
+                                    <Select {...field} {...role.bindInput}>
+                                        <MenuItem value="user">User</MenuItem>
+                                        <MenuItem value="pro">Pro</MenuItem>
+                                        <MenuItem value="admin">Admin</MenuItem>
+                                    </Select>
+                                }
                             />
+                            {errors.role?.type === 'required' && <span className="text-danger">Required</span>}
                         </FormControl>
                     </Grid>
                     { add && 

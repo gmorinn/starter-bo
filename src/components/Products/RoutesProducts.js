@@ -25,5 +25,5 @@ export const productsRoutes = {
 	to: '/products',
 	exact: true,
 	icon: 'home',
-	roles: ["root", "admin", "user"]
+	roles: ["root", "admin"]
 };

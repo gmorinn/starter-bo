@@ -12,6 +12,7 @@ const EditUser = () => {
 
     useEffect(() => {
 		!data && Fetch(`/v1/bo/user/${router.query.id}`, "GET").then(res => res?.success && setData(res.user))
+		return () => setData([])
 		// eslint-disable-next-line
 	}, [])
 	
