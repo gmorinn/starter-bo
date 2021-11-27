@@ -1,8 +1,10 @@
 const Err = res => {
-	console.log(res)
 	if (res?.err) {
 		if (res.err.includes("no rows in result set")) {
 			return "Email or password incorrect"
+		}
+		if (res.err.includes("EMAIL_ALREADY_EXIST")) {
+			return "Email already exist."
 		}
 		if (res.err.includes("unique_violation")) {
 			return "The data entered is already in use."

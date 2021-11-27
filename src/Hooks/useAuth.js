@@ -237,21 +237,22 @@ function useProvideAuth() {
 		})
 	};
 
-	const newPassword = async (password, confirm, token) => {
+	const newPassword = async (password, confirm, current) => {
 		setLoad(true)
-		return await fetch(`${api}/v1/bo/password/${token}`, {
+		return await fetch(`${api}/v1/bo/password`, {
 			headers: {
 				"Authorization": `Bearer ${getOAuthToken()}`,
 				"Content-Type": "application/json"
 			},
 			method: "PATCH",
 			body: JSON.stringify({
-				password: password,
-				confirm: confirm
+				password,
+				confirm,
+				current
 			})
 		}).then(async resp => {
 			if (resp.status === 403) {
-				await getAuthorization().then(async () => await newPassword(password, token))
+				await getAuthorization().then(async () => await newPassword(password, confirm, current))
 			}
 			return await resp.json()
 		}).then(body => {
