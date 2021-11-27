@@ -260,21 +260,6 @@ function useProvideAuth() {
 		})
 	};
 
-	const getProfile = async (params) => {
-		let res = await fetch(`${api}/v1/bo/profile/${params.id}`, {
-			headers: {
-				Authorization: `Bearer ${getOAuthToken()}`,
-				jwtToken: `Bearer ${getAccessToken()}`,
-			},
-			method: "GET"
-		});
-
-		if (res.status === 403) {
-			return await getAuthorization().then(res => res && getProfile(params))
-		}
-		return res.json()
-	}
-
 	useEffect(() => {
 		if (loggedIn()) {
 			setUser(getUser())
@@ -299,6 +284,5 @@ function useProvideAuth() {
 		logout,
 		lost,
 		newPassword,
-		getProfile,
 	};
 }

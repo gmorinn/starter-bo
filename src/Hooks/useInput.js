@@ -9,7 +9,6 @@ const useInput = (initialValue, name, type, placeholder, className, styles = {})
         placeholder,
         type,
         className: className,
-        name: name,
         style: styles,
     }
 

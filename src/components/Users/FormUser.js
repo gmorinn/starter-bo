@@ -14,20 +14,32 @@ import { useApi } from "../../Hooks/useApi";
 import useRouter from "../../Hooks/useRouter";
 import moment from 'moment'
 import 'react-phone-input-2/lib/material.css'
+import Err from '../../utils/humanResp'
 
 const FormUser = ({ add, edit, formData }) => {
     const { Fetch } = useApi()
 
     const router = useRouter()
 
-    const addUser = (data) => {
-        Fetch('/v1/bo/user/add', "POST", data, true)
-            .then(res => res.success && console.log(res))
+    const setUser = async (data) => {
+        if (add && !edit) {
+            await Fetch('/v1/bo/user/add', "POST", data, true)
+                .then(res => {
+                    if (res?.success) console.log("succeed!")
+                    else { throw Err(res) }
+                })
+        } else {
+            await Fetch(`/v1/bo/user/${router.query.id}`, "PUT", { User: data }, true)
+                .then(res => {
+                    if (res?.success) console.log("succeed!")
+                    else { throw Err(res) }
+                })
+        }
     }
 
-    const { isLoading, mutate, isError } = useMutation(addUser, {
+    const { isLoading, mutate, isError, error } = useMutation(setUser, {
         onSuccess: () => {
-            toast.success("Add!", {
+            toast.success("Success !", {
                 position: "top-left",
                 autoClose: 3000,
                 theme: "dark",
@@ -40,7 +52,7 @@ const FormUser = ({ add, edit, formData }) => {
         }
     })
 
-    const schema = yup.object({
+    const AddSchema = yup.object({
         firstname: yup.string().min(3).required(),
         lastname: yup.string().min(3).required(),
         email: yup.string().email().required(),
@@ -50,8 +62,15 @@ const FormUser = ({ add, edit, formData }) => {
             .oneOf([yup.ref('password'), null], 'Password is different.'),
       });
 
+      const EditSchema = yup.object({
+        firstname: yup.string().min(3).required(),
+        lastname: yup.string().min(3).required(),
+        email: yup.string().email().required(),
+        role: yup.string().oneOf(["user", "pro", "admin"]).required(),
+      });
+
     const { handleSubmit, control, formState: { errors } } = useForm({
-        resolver: yupResolver(schema)
+        resolver: yupResolver(add ? AddSchema : EditSchema)
     });
 
     const firstname = useInput(formData ? formData.firstname : "", "firstname", "text", "Firstname...", "w-100")
@@ -59,14 +78,14 @@ const FormUser = ({ add, edit, formData }) => {
     const email = useInput(formData ? formData.email : "", "email", "email", "Email...", "w-100")
     const password = useInput("", "password", "password", "Password...", "w-100")
     const confirmPassword = useInput("", "confirmPassword", "password", "Confirm password...", "w-100")
-    const phone = useInput(null, "phone", "phone", "Phone number...", "w-100")
-    const role = useInput("user", "role", "text", "Role...", "w-100")
-    const [birthday, setBirthday] = useState(formData ? moment(formData.birthday) : null);
+    const phone = useInput(formData ? formData.phone : null, "phone", "phone", "Phone number...", "w-100")
+    const role = useInput(formData ? formData.role : "user", "role", "text", "Role...", "w-100")
+    const [birthday, setBirthday] = useState(formData ? moment(new Date(formData.birthday)) : null);
 
     const onSubmit = data => mutate({ firstname: data.firstname,
                                 lastname: data.lastname,
                                 email: data.email,
-                                birthday: birthday ? moment(birthday).format('DD-MM-YYYY') : null,
+                                birthday: birthday ? moment(birthday).format('YYYY-MM-DD') : null,
                                 phone: data.phone ? "+"+data.phone : null,
                                 role: data.role,
                                 password: data.password,
@@ -75,7 +94,7 @@ const FormUser = ({ add, edit, formData }) => {
 
     return (
             <form onSubmit={handleSubmit(onSubmit)} className="d-flex flex-column">
-                 <Grid container rowSpacing={5} columnSpacing={{ xs: 2, sm: 5, md: 10, xl: 20 }}>
+                <Grid container rowSpacing={5} columnSpacing={{ xs: 2, sm: 5, md: 10, xl: 20 }}>
                     <Grid item md={6}>
                         <FormControl className="mb-5 mt-5 w-100">
                             <Controller
@@ -156,7 +175,7 @@ const FormUser = ({ add, edit, formData }) => {
                             {errors.role?.type === 'required' && <span className="text-danger">Required</span>}
                         </FormControl>
                     </Grid>
-                    { add && 
+                    { add &&
                         <>
                             <Grid item md={6}>
                                 <FormControl className="mb-5 mt-5 w-100">
@@ -188,9 +207,9 @@ const FormUser = ({ add, edit, formData }) => {
 
 
                 <Button size="small" className="w-50 mx-auto px-5 pt-3 pb-3 mb-2 text-white" type='submit' style={{backgroundColor: 'black'}} disabled={isLoading}>
-                    {isLoading ? <Loader /> : <>Add User</>}
+                    {isLoading ? <Loader /> : <>{add ? "Add User" : "Edit User"}</>}
                 </Button>
-                {isError && <span className="text-danger">Error occured</span>}
+                {isError && <span className="text-danger text-center">{error}</span>}
             </form>
     )
 }

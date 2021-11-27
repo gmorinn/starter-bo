@@ -1,11 +1,9 @@
+import Err from './humanResp'
+
 export const SigninWithMailAndPassword = async ({email, password, login}) => {
     await login(email, password)
         .then(res => {
-            if (res?.success) {
-                console.log("succeed!")
-            } else {
-                throw new Error(res)
-            }
+            if (res?.success) console.log("succeed!")
+            else { throw Err(res) }
         })
-        .catch(err => {throw new Error(err)})
 }

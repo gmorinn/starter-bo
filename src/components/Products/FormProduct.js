@@ -8,16 +8,30 @@ import * as yup from "yup";
 import useInput from "../../Hooks/useInput";
 import Loader from '../Loader'
 import { useApi } from "../../Hooks/useApi";
+import Err from '../../utils/humanResp'
+import useRouter from "../../Hooks/useRouter";
 
-const FormProduct = () => {
+const FormProduct = ({ add, edit, formData }) => {
     const { Fetch } = useApi()
+    const router = useRouter()
 
-    const addProduct = (data) => {
-        Fetch('/v1/bo/product/add', "POST", data, true)
-            .then(res => res.success && console.log(res))
+    const addProduct = async (data) => {
+        if (add && !edit) {
+            await Fetch('/v1/bo/product/add', "POST", data, true)
+            .then(res => {
+                if (res?.success) console.log("succeed!")
+                else { throw Err(res) }
+            })
+        } else {
+            await Fetch(`/v1/bo/product/${router.query.id}`, "PUT", { product: data }, true)
+                .then(res => {
+                    if (res?.success) console.log("succeed!")
+                    else { throw Err(res) }
+                })
+        }
     }
 
-    const { isLoading, mutate, isError } = useMutation(addProduct, {
+    const { isLoading, mutate, isError, error } = useMutation(addProduct, {
         onSuccess: () => {
             toast.success("Add!", {
                 position: "top-left",
@@ -34,14 +48,14 @@ const FormProduct = () => {
     const schema = yup.object({
         name: yup.string().min(3).required(),
         category: yup.string().oneOf(["men", "women", "jacket", "hat", "sneaker"]).required(),
-      }).required();
+      });
 
     const { handleSubmit, control, formState: { errors } } = useForm({
         resolver: yupResolver(schema)
     });
 
-    const name = useInput("", "name", "text", "Name...", "w-100")
-    const category = useInput("men", "category", "text", "Category...", "w-100")
+    const name = useInput(formData ? formData.name : "", "name", "text", "Name...", "w-100")
+    const category = useInput(formData ? formData.name : "men", "category", "text", "Category...", "w-100")
 
     const onSubmit = data => mutate(data);
 
@@ -51,7 +65,7 @@ const FormProduct = () => {
             <form onSubmit={handleSubmit(onSubmit)} className="d-flex flex-column">
                 <Grid container rowSpacing={5} columnSpacing={{ xs: 2, sm: 5, md: 10, xl: 20 }}>
                     <Grid item md={6}>
-                        <FormControl className="mb-5 mt-5 w-100">
+                        <FormControl className="mb-5 mt-5 w-75">
                             <Controller
                                 {...name.bindHookForm}
                                 control={control}
@@ -63,13 +77,13 @@ const FormProduct = () => {
                     </Grid>
 
                     <Grid item md={6}>
-                        <FormControl className="mb-5 mt-5 w-100">
+                        <FormControl className="mb-5 mt-5 w-75">
                             <Controller
                                 id="demo-simple-select-standard"
                                 {...category.bindHookForm}
                                 control={control}
                                 render={({ field }) => 
-                                    <Select {...field} {...name.bindInput}>
+                                    <Select {...field} {...category.bindInput}>
                                         <MenuItem value="men">Men</MenuItem>
                                         <MenuItem value="women">Women</MenuItem>
                                         <MenuItem value="sneaker">Sneaker</MenuItem>
@@ -83,9 +97,9 @@ const FormProduct = () => {
                     </Grid>
                 </Grid>
                 <Button size="small" className="w-50 mx-auto px-5 pt-3 pb-3 mb-2 text-white" type='submit' style={{backgroundColor: 'black'}} disabled={isLoading}>
-                    {isLoading ? <Loader /> : <>Add Product</>}
+                    {isLoading ? <Loader /> : <>{add ? "Add Product" : "Edit Product"}</>}
                 </Button>
-                {isError && <span className="text-danger">Error occured</span>}
+                {isError && <span className="text-danger text-center">{error}</span>}
             </form>
         </div>
         </>

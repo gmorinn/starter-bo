@@ -17,7 +17,7 @@ const FormLogin = () => {
     const router = useRouter()
     const { login } = useAuth()
 
-    const {isError, isLoading, mutate } = useMutation(api.SigninWithMailAndPassword, {
+    const {isError, isLoading, mutate, error } = useMutation(api.SigninWithMailAndPassword, {
         onSuccess: () => {
             toast.success("You're connected!", {
                 position: "top-left",
@@ -30,7 +30,7 @@ const FormLogin = () => {
                 progress: undefined,
                 });
             router.push('/')
-        }
+        },
     })
 
     const schema = yup.object({
@@ -70,7 +70,7 @@ const FormLogin = () => {
                         />
                     {errors.password?.type === 'required' && <span className="mb-2">Required</span>}
                     {errors.password?.type === 'min' && <span className="mb-2">Too small</span>}
-                {isError && <span className="text-danger">* Email or password incorrect</span>}
+                {isError && <span className="text-danger">{error}</span>}
                 </FormControl>
                 <Button size="small" className="w-100 px-5 pt-3 pb-3 mb-2 text-white" type='submit' style={{backgroundColor: 'black'}} disabled={isLoading}>
                     {isLoading ? <Loader /> : <><Box component="i" marginRight="1rem"><AlternateEmailIcon /></Box>Login by mail</>}

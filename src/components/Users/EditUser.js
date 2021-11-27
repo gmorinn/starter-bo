@@ -15,6 +15,8 @@ const EditUser = () => {
 		return () => setData([])
 		// eslint-disable-next-line
 	}, [])
+
+	console.log(data)
 	
     return (
         <>
