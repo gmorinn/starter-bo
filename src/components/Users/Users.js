@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Table, TableBody, TableCell, TableContainer, TableRow, Paper, Checkbox } from '@mui/material';
+import { Box, Table, TableBody, TableCell, TableContainer, TableRow, Paper, Checkbox, IconButton } from '@mui/material';
 import { useApi } from '../../Hooks/useApi';
 import * as sort from '../../Hooks/useSort'
 import Pagination from '../../Hooks/usePagination'
 import Header from '../../Hooks/useHeader'
 import DashboardFilter from '../../Hooks/useDashboardFilter';
-import { useHistory } from 'react-router';
+import useRouter from '../../Hooks/useRouter'
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
 
 const headCells = [
   {
@@ -31,7 +32,7 @@ const headCells = [
     numeric: true,
     disablePadding: false,
     label: 'Phone Number',
-  }, 
+  },
   {
     id: 'birthday',
     numeric: true,
@@ -52,7 +53,7 @@ const Users = () => {
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const history = useHistory()
+  const router = useRouter()
 
   const [data, setData] = useState([])
   const { Fetch } = useApi()
@@ -104,7 +105,7 @@ const Users = () => {
             title="Users"
             numSelected={selected.length} 
             deleteItems={deleteItems}
-            add={() => history.push('/user/add')}
+            add={() => router.push('/user/add')}
           />
           <TableContainer>
             <Table
@@ -164,6 +165,15 @@ const Users = () => {
                       <TableCell align="right">{row.phone}</TableCell>
                       <TableCell align="right">{row.birthday}</TableCell>
                       <TableCell align="right">{row.role}</TableCell>
+                      <TableCell align="center">
+                          <IconButton
+                            aria-label="edit page"
+                            size="small"
+                            onClick={() => router.push(`/user/edit/${row.id}`)}
+                          >
+                            <ModeEditIcon fontSize="small"/>
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
                   );
                 })}

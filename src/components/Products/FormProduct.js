@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { toast } from 'react-toastify';
 import { useMutation } from "react-query";
 import { Button, FormControl, Grid, Input, MenuItem, Select } from '@mui/material';
@@ -11,8 +11,15 @@ import { useApi } from "../../Hooks/useApi";
 import Err from '../../utils/humanResp'
 import useRouter from "../../Hooks/useRouter";
 
+const defaultForm = {
+    name: "",
+    category: "men"
+}
+
+
 const FormProduct = ({ add, edit, formData }) => {
     const { Fetch } = useApi()
+
     const router = useRouter()
 
     const addProduct = async (data) => {
@@ -42,6 +49,7 @@ const FormProduct = ({ add, edit, formData }) => {
                 draggable: true,
                 progress: undefined,
             });
+            router.push('/products')
         }
     })
 
@@ -50,9 +58,16 @@ const FormProduct = ({ add, edit, formData }) => {
         category: yup.string().oneOf(["men", "women", "jacket", "hat", "sneaker"]).required(),
       });
 
-    const { handleSubmit, control, formState: { errors } } = useForm({
-        resolver: yupResolver(schema)
+    const { handleSubmit, control, reset, formState: { errors, isSubmitSuccessful } } = useForm({
+        resolver: yupResolver(schema),
+        defaultValues: formData || defaultForm
     });
+
+    useEffect(() => {
+        if (isSubmitSuccessful) {
+          reset(defaultForm);
+        }
+      }, [isSubmitSuccessful, reset]);
 
     const name = useInput(formData ? formData.name : "", "name", "text", "Name...", "w-100")
     const category = useInput(formData ? formData.name : "men", "category", "text", "Category...", "w-100")

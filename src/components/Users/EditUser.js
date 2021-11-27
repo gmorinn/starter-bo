@@ -15,8 +15,6 @@ const EditUser = () => {
 		return () => setData([])
 		// eslint-disable-next-line
 	}, [])
-
-	console.log(data)
 	
     return (
         <>
@@ -28,7 +26,7 @@ const EditUser = () => {
 					</Button>
 				</Box>
 				<CardContent>
-					<FormUser edit formData={data} />
+					{data && <FormUser edit formData={data} />}
 				</CardContent>
 			</Card>
         </>

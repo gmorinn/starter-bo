@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from 'react-toastify';
 import { useMutation } from "react-query";
 import { Button, FormControl, Grid, Input, Select, TextField, MenuItem } from '@mui/material';
@@ -16,11 +16,23 @@ import moment from 'moment'
 import 'react-phone-input-2/lib/material.css'
 import Err from '../../utils/humanResp'
 
+const defaultForm = {
+    firstname: "",
+    lastname: "",
+    email: "",
+    birthday: null,
+    phone: null,
+    role: "user",
+    password:"",
+    confirm_password:""
+}
+
 const FormUser = ({ add, edit, formData }) => {
     const { Fetch } = useApi()
 
     const router = useRouter()
 
+    // FETCH TO CHANGE ITEM
     const setUser = async (data) => {
         if (add && !edit) {
             await Fetch('/v1/bo/user/add', "POST", data, true)
@@ -37,6 +49,7 @@ const FormUser = ({ add, edit, formData }) => {
         }
     }
 
+    // START REACT QUERY
     const { isLoading, mutate, isError, error } = useMutation(setUser, {
         onSuccess: () => {
             toast.success("Success !", {
@@ -52,6 +65,7 @@ const FormUser = ({ add, edit, formData }) => {
         }
     })
 
+    // ADD VALIDATION
     const AddSchema = yup.object({
         firstname: yup.string().min(3).required(),
         lastname: yup.string().min(3).required(),
@@ -62,17 +76,27 @@ const FormUser = ({ add, edit, formData }) => {
             .oneOf([yup.ref('password'), null], 'Password is different.'),
       });
 
-      const EditSchema = yup.object({
-        firstname: yup.string().min(3).required(),
-        lastname: yup.string().min(3).required(),
-        email: yup.string().email().required(),
-        role: yup.string().oneOf(["user", "pro", "admin"]).required(),
-      });
-
-    const { handleSubmit, control, formState: { errors } } = useForm({
-        resolver: yupResolver(add ? AddSchema : EditSchema)
+    // EDIT VALIDATION
+    const EditSchema = yup.object({
+    firstname: yup.string().min(3).required(),
+    lastname: yup.string().min(3).required(),
+    email: yup.string().email().required(),
+    role: yup.string().oneOf(["user", "pro", "admin"]).required(),
     });
 
+    // START HOOK FORM
+    const { handleSubmit, control, reset, formState: { errors, isSubmitSuccessful } } = useForm({
+        resolver: yupResolver(add ? AddSchema : EditSchema),
+        defaultValues: formData || defaultForm
+    });
+
+    useEffect(() => {
+        if (isSubmitSuccessful) {
+          reset(defaultForm);
+        }
+      }, [isSubmitSuccessful, reset]);
+
+    // ALL INPUT USED
     const firstname = useInput(formData ? formData.firstname : "", "firstname", "text", "Firstname...", "w-100")
     const lastname = useInput(formData ? formData.lastname : "", "lastname", "text", "Lastname...", "w-100")
     const email = useInput(formData ? formData.email : "", "email", "email", "Email...", "w-100")
@@ -82,15 +106,16 @@ const FormUser = ({ add, edit, formData }) => {
     const role = useInput(formData ? formData.role : "user", "role", "text", "Role...", "w-100")
     const [birthday, setBirthday] = useState(formData ? moment(new Date(formData.birthday)) : null);
 
+    // JSON SEND TO THE API
     const onSubmit = data => mutate({ firstname: data.firstname,
-                                lastname: data.lastname,
-                                email: data.email,
-                                birthday: birthday ? moment(birthday).format('YYYY-MM-DD') : null,
-                                phone: data.phone ? "+"+data.phone : null,
-                                role: data.role,
-                                password: data.password,
-                                confirm_password: data.confirmPassword,
-                            });
+                                      lastname: data.lastname,
+                                      email: data.email,
+                                      birthday: birthday ? moment(birthday).format('YYYY-MM-DD') : null,
+                                      phone: data.phone ? "+"+data.phone : null,
+                                      role: data.role,
+                                      password: data.password,
+                                      confirm_password: data.confirmPassword,
+                                    });
 
     return (
             <form onSubmit={handleSubmit(onSubmit)} className="d-flex flex-column">

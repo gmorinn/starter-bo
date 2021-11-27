@@ -26,7 +26,7 @@ const EditProduct = () => {
 					</Button>
 				</Box>
 				<CardContent>
-					<FormProduct edit formData={data} />
+					{data && <FormProduct edit formData={data} />}
 				</CardContent>
 			</Card>
         </>
