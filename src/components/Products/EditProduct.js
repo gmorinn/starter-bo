@@ -21,7 +21,7 @@ const EditProduct = () => {
             <Card className="mb-3">
                 <Box className="d-flex justify-content-between p-4">
 					<h5>Edit Product</h5>
-					<Button className="mx-2 bg-dark" variant="contained" onClick={() => router.push('/products')}>
+					<Button className="mx-2" variant="contained" onClick={() => router.push('/products')}>
 						Go back
 					</Button>
 				</Box>

@@ -111,7 +111,7 @@ const FormProduct = ({ add, edit, formData }) => {
                         </FormControl>
                     </Grid>
                 </Grid>
-                <Button size="small" className="w-50 mx-auto px-5 pt-3 pb-3 mb-2 text-white" type='submit' style={{backgroundColor: 'black'}} disabled={isLoading}>
+                <Button size="small" className="w-50 mx-auto px-5 pt-3 pb-3 mb-2" type='submit' variant="contained" disabled={isLoading}>
                     {isLoading ? <Loader /> : <>{add ? "Add Product" : "Edit Product"}</>}
                 </Button>
                 {isError && <span className="text-danger text-center">{error}</span>}

@@ -24,7 +24,7 @@ const EditUser = () => {
             <Card className="mb-5">
                 <Box className="d-flex justify-content-between p-4">
 					<h5>Edit User</h5>
-					<Button className="mx-2 bg-dark" variant="contained" onClick={() => router.push('/users')}>
+					<Button className="mx-2" variant="contained" onClick={() => router.push('/users')}>
 						Go back
 					</Button>
 				</Box>
@@ -35,7 +35,7 @@ const EditUser = () => {
 			<Card className="mb-3">
                 <Box className="d-flex justify-content-between p-4">
 					<h5>Edit Password</h5>
-					<Button className="mx-2 bg-dark" variant="contained" onClick={() => router.push('/users')}>
+					<Button className="mx-2" variant="contained" onClick={() => router.push('/users')}>
 						Go back
 					</Button>
 				</Box>

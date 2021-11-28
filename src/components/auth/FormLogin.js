@@ -72,7 +72,7 @@ const FormLogin = () => {
                     {errors.password?.type === 'min' && <span className="mb-2">Too small</span>}
                 {isError && <span className="text-danger">{error}</span>}
                 </FormControl>
-                <Button size="small" className="w-100 px-5 pt-3 pb-3 mb-2 text-white" type='submit' style={{backgroundColor: 'black'}} disabled={isLoading}>
+                <Button size="small" className="w-100 px-5 pt-3 pb-3 mb-2" type='submit' variant="contained" disabled={isLoading}>
                     {isLoading ? <Loader /> : <><Box component="i" marginRight="1rem"><AlternateEmailIcon /></Box>Login by mail</>}
                 </Button>
             </form>

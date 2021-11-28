@@ -13,7 +13,6 @@ import PhoneInput from 'react-phone-input-2'
 import { useApi } from "../../Hooks/useApi";
 import useRouter from "../../Hooks/useRouter";
 import moment from 'moment'
-import 'react-phone-input-2/lib/material.css'
 import Err from '../../utils/humanResp'
 
 const defaultForm = {
@@ -231,7 +230,7 @@ const FormUser = ({ add, edit, formData }) => {
 
 
 
-                <Button size="small" className="w-50 mx-auto px-5 pt-3 pb-3 mb-2 text-white" type='submit' style={{backgroundColor: 'black'}} disabled={isLoading}>
+                <Button size="small" className="w-50 mx-auto px-5 pt-3 pb-3 mb-2" type='submit' variant="contained" disabled={isLoading}>
                     {isLoading ? <Loader /> : <>{add ? "Add User" : "Edit User"}</>}
                 </Button>
                 {isError && <span className="text-danger text-center">{error}</span>}

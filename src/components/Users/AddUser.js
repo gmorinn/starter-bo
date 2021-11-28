@@ -12,7 +12,7 @@ const AddUser = () => {
             <Card className="mb-3">
 				<Box className="d-flex justify-content-between p-4">
 					<h5>New User</h5>
-					<Button className="mx-2 bg-dark" variant="contained" onClick={() => router.push('/users')}>
+					<Button className="mx-2" variant="contained" onClick={() => router.push('/users')}>
 						Go back
 					</Button>
 				</Box>

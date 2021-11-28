@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AppBar, IconButton, Toolbar, Typography } from '@mui/material';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import useRouter from '../Hooks/useRouter'
 import { useAuth } from '../Hooks/useAuth'
 import MenuIcon from '@mui/icons-material/Menu';
@@ -8,11 +8,13 @@ import { toast } from 'react-toastify';
 import { currentUserAtom } from '../store/user';
 import Navbar from './Navbar';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
+import { darkModeAtom } from '../store/mode';
 
 const Header = () => {
   const router = useRouter()
   const { logout } = useAuth()
   const [currentUser, setCurrentUser] = useRecoilState(currentUserAtom)
+  const mode = useRecoilValue(darkModeAtom)
 
   const [isDrawerOpen, setDrawerOpen] = useState(false);
 
@@ -32,13 +34,13 @@ const Header = () => {
     router.history.push('/sign')
   }
   return (
-      <AppBar sx={{ backgroundColor: 'white'}} position="fixed">
+      <AppBar position="fixed" className={`${!mode && "bg-white"}`}>
         <Toolbar  sx={{ display: 'flex', justifyContent: 'space-between'}}>
-          <Typography variant="a" component="div" sx={{ color: 'black', cursor: 'pointer' }}>
+          <Typography variant="a" component="div" sx={{ cursor: 'pointer' }}>
               <IconButton
                 edge="start"
                 className=""
-                color="inherit"
+                color="default"
                 aria-label="open navbar"
                 onClick={() => setDrawerOpen(true)}
               >
@@ -46,9 +48,9 @@ const Header = () => {
               </IconButton>
               <Navbar open={isDrawerOpen} toggleDrawerHandler={() => setDrawerOpen(false)} />
             </Typography>
-              <LocalFireDepartmentIcon sx={{ color: 'black', cursor: 'pointer' }}  onClick={() => router.push('/')}/>
+              <LocalFireDepartmentIcon sx={{ color: `${!mode && "black"}`, cursor: 'pointer' }}  onClick={() => router.push('/')}/>
               {
-                currentUser && <div className="text-dark" style={{cursor: 'pointer'}} onClick={Logout}>Logout</div>
+                currentUser && <div className={`${!mode ? "text-dark" : "text-white"}`} style={{cursor: 'pointer'}} onClick={Logout}>Logout</div>
               }
         </Toolbar>
       </AppBar>

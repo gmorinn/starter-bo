@@ -237,9 +237,33 @@ function useProvideAuth() {
 		})
 	};
 
-	const newPassword = async (password, confirm, current) => {
+	const newPassword = async (password, confirm, id) => {
 		setLoad(true)
-		return await fetch(`${api}/v1/bo/password`, {
+		return await fetch(`${api}/v1/bo/user/change/password/${id}`, {
+			headers: {
+				"Authorization": `Bearer ${getOAuthToken()}`,
+				"jwtToken": getAccessToken(),
+				"Content-Type": "application/json"
+			},
+			method: "PATCH",
+			body: JSON.stringify({
+				password,
+				confirm,
+			})
+		}).then(async resp => {
+			if (resp.status === 403) {
+				await getAuthorization().then(async () => await newPassword(password, confirm, id))
+			}
+			return await resp.json()
+		}).then(body => {
+			setLoad(false)
+			return body
+		})
+	};
+
+	const resetPassword = async (password, confirm, current) => {
+		setLoad(true)
+		return await fetch(`${api}/v1/web/reset/password`, {
 			headers: {
 				"Authorization": `Bearer ${getOAuthToken()}`,
 				"Content-Type": "application/json"
@@ -252,7 +276,7 @@ function useProvideAuth() {
 			})
 		}).then(async resp => {
 			if (resp.status === 403) {
-				await getAuthorization().then(async () => await newPassword(password, confirm, current))
+				await getAuthorization().then(async () => await resetPassword(password, confirm, current))
 			}
 			return await resp.json()
 		}).then(body => {
@@ -283,6 +307,7 @@ function useProvideAuth() {
 		signup,
 		login,
 		logout,
+		resetPassword,
 		lost,
 		newPassword,
 	};

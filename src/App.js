@@ -1,14 +1,17 @@
-import React, { lazy, useEffect } from "react";
+import React, { lazy, useEffect, useMemo } from "react";
 import { Container } from '@mui/material';
 import { Switch, Route, Redirect } from "react-router-dom";
 import './App.scss'
 import { useAuth } from "./Hooks/useAuth";
 import { useApi } from "./Hooks/useApi";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { currentUserAtom } from "./store/user";
 // import NotFound from "./screen/notFound";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { darkModeAtom } from "./store/mode";
 
 const Home = lazy(() => import("./screen/homepage"))
 const Sign = lazy(() => import("./screen/sign"))
@@ -19,6 +22,17 @@ const App = () => {
   const [currentUser, setCurrentUser] = useRecoilState(currentUserAtom)
   const { user, logout } = useAuth()
   const { Fetch } = useApi()
+  const darkMode = useRecoilValue(darkModeAtom)
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: darkMode ? "dark" : "light",
+        },
+      }),
+    [darkMode],
+  );
+
 
   useEffect(() => {
     user && user.id ? Fetch(`/v1/bo/user/${user.id}`).then(res => {
@@ -34,12 +48,15 @@ const App = () => {
   }, [user])
 
   return (
-      <Container className="mt-5" maxWidth="xl">
-          <Switch>
-              <Route exac path="/sign" render={() => currentUser ? <Redirect to='/' /> : <Sign />} />
-              <PrivateRoute exac path="/" component={Home} />
-          </Switch>
+    <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Container className="mt-5" maxWidth="xl">
+            <Switch>
+                <Route exac path="/sign" render={() => currentUser ? <Redirect to='/' /> : <Sign />} />
+                <PrivateRoute exac path="/" component={Home} />
+            </Switch>
         </Container>
+    </ThemeProvider>
   )
 }
 

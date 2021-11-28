@@ -35,7 +35,7 @@ const DashboardFilter = ({ numSelected, title, deleteItems, add }) => {
             {title}
           </Typography>
         )}
-        <Button variant="outlined" className="bg-dark text-white" onClick={add}>
+        <Button variant="contained" onClick={add}>
           Add
         </Button>
         {numSelected > 0 ? (
