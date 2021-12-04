@@ -162,7 +162,7 @@ const Users = () => {
                       </TableCell>
                       <TableCell align="right">{row.lastname}</TableCell>
                       <TableCell align="right">{row.email}</TableCell>
-                      <TableCell align="right">{row.phone}</TableCell>
+                      <TableCell align="right">{row.phone && "+"+row.phone}</TableCell>
                       <TableCell align="right">{row.birthday}</TableCell>
                       <TableCell align="right">{row.role}</TableCell>
                       <TableCell align="center">
