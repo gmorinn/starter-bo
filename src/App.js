@@ -15,6 +15,8 @@ import { darkModeAtom } from "./store/mode";
 
 const Home = lazy(() => import("./screen/homepage"))
 const Sign = lazy(() => import("./screen/sign"))
+const CheckEmail = lazy(() => import("./screen/checkEmail"))
+const ForgotPassword = lazy(() => import("./screen/forgotPassword"))
 
 toast.configure();
 
@@ -53,6 +55,8 @@ const App = () => {
         <Container className="mt-5" maxWidth="xl">
             <Switch>
                 <Route exac path="/sign" render={() => currentUser ? <Redirect to='/' /> : <Sign />} />
+                <Route exac path="/forgot-password" component={ForgotPassword} />
+                <Route exac path="/check-email" component={CheckEmail} />
                 <PrivateRoute exac path="/" component={Home} />
             </Switch>
         </Container>
