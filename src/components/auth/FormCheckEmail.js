@@ -7,20 +7,20 @@ import useInput from "../../Hooks/useInput.js";
 import { useMutation } from "react-query";
 import useRouter from "../../Hooks/useRouter.js";
 import { toast } from 'react-toastify';
-import { useApi } from "../../Hooks/useApi";
 import Loader from '../Loader'
 import UseFormGroup from "../../Hooks/useForm";
+import { useAuth } from "../../Hooks/useAuth.js";
 
 const CheckEmail = () => {
 
     const router = useRouter()
-    const { Fetch } = useApi()
+    const { lost } = useAuth()
 
     const checkMail = async (data) => {
-        await Fetch('/v1/bo/email-exist/code', "POST", data, true)
+        await lost(data)
             .then(res => {
                 if (res?.success && res.exist) console.log("succeed!")
-                else if (res?.success && !res.exist) { throw "Email doesn't exist" }
+                else { throw new Error("Email doesn't exist") }
             })
     }
 

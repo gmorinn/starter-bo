@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Box, Table, TableBody, TableCell, TableContainer, TableRow, Paper, Checkbox, IconButton } from '@mui/material';
 import { useApi } from '../../Hooks/useApi';
 import * as sort from '../../Hooks/useSort'
-import Pagination from '../../Hooks/usePagination'
-import Header from '../../Hooks/useHeader'
-import DashboardFilter from '../../Hooks/useDashboardFilter';
+import DashboardPagination from '../dashboard/DashboardPagination'
+import DashboardHeader from '../dashboard/DashboardHeader'
+import DashboardHeaderFilter from '../dashboard/DashboardHeaderFilter';
 import useRouter from '../../Hooks/useRouter'
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 
@@ -101,7 +101,7 @@ const Users = () => {
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-          <DashboardFilter 
+          <DashboardHeaderFilter 
             title="Users"
             numSelected={selected.length} 
             deleteItems={deleteItems}
@@ -114,7 +114,7 @@ const Users = () => {
               size={'medium'}
             >
             {/* ********* HEADER ****** */}
-            <Header
+            <DashboardHeader
               data={data}
               setSelected={setSelected}
               headCells={headCells}
@@ -188,7 +188,7 @@ const Users = () => {
               )}
             </TableBody>
             {/* ****** PAGINATION ********* */}
-            <Pagination 
+            <DashboardPagination 
               data={data}
               rowsPerPage={rowsPerPage}
               setPage={setPage}

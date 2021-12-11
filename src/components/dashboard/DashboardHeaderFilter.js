@@ -4,7 +4,7 @@ import { alpha } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 
-const DashboardFilter = ({ numSelected, title, deleteItems, add }) => {
+const DashboardHeaderFilter = ({ numSelected, title, deleteItems, add }) => {
     return (
       <Toolbar
         sx={{
@@ -55,4 +55,4 @@ const DashboardFilter = ({ numSelected, title, deleteItems, add }) => {
     );
 }
 
-export default DashboardFilter
+export default DashboardHeaderFilter

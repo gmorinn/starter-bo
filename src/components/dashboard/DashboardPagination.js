@@ -60,9 +60,9 @@ const TablePaginationActions = props => {
     );
 }
 
-const Pagination = (props) => {
+const DashboardPagination = (props) => {
 
-    const { setPage, data, rowsPerPage, setRowsPerPage, page } = props
+    const { setPage, rowsPerPage, setRowsPerPage, page, total } = props
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -79,7 +79,7 @@ const Pagination = (props) => {
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                     colSpan={12}
-                    count={data.length}
+                    count={total}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     SelectProps={{
@@ -97,4 +97,4 @@ const Pagination = (props) => {
     )
 }
 
-export default Pagination
+export default DashboardPagination

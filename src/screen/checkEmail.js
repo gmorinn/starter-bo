@@ -15,6 +15,8 @@ const ForgotPassword = () => {
                     <FormControlLabel onChange={() => setMode(v => !v)} control={<Switch value={mode} />} label="Dark Mode" className="p-3" />
                     <WhatshotIcon sx={{ fontSize: 40 }} className="mt-5 w-100 d-flex justify-content-center"/>
                     <CardContent>
+                        <h3 className="text-center">Reset your Password</h3>
+                        <h5 className="text-center">Step 1/2</h5>
                        <FormCheckEmail />
                     </CardContent>
                 </Card>

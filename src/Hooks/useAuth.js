@@ -215,20 +215,20 @@ function useProvideAuth() {
 		setUser(() => null)
 	};
 
-	const lost = async email => {
+	const lost = async data => {
 		setLoad(true)
-		return await fetch(`${api}/v1/bo/lost`, {
+		return await fetch(`${api}/v1/lost`, {
 			headers: {
 				"Authorization": `Bearer ${getOAuthToken()}`,
 				"Content-Type": "application/json"
 			},
 			method: "POST",
 			body: JSON.stringify({
-				email: email
+				data
 			})
 		}).then(async resp => {
 			if (resp.status === 403) {
-				await getAuthorization().then(async () => await lost(email))
+				await getAuthorization().then(async () => await lost(data))
 			}
 			return await resp.json()
 		}).then(body => {
@@ -261,22 +261,20 @@ function useProvideAuth() {
 		})
 	};
 
-	const resetPassword = async (password, confirm, current) => {
+	const resetPassword = async (data) => {
 		setLoad(true)
-		return await fetch(`${api}/v1/web/reset/password`, {
+		return await fetch(`${api}/v1/reset-password`, {
 			headers: {
 				"Authorization": `Bearer ${getOAuthToken()}`,
 				"Content-Type": "application/json"
 			},
-			method: "PATCH",
+			method: "PUT",
 			body: JSON.stringify({
-				password,
-				confirm,
-				current
+				data
 			})
 		}).then(async resp => {
 			if (resp.status === 403) {
-				await getAuthorization().then(async () => await resetPassword(password, confirm, current))
+				await getAuthorization().then(async () => await resetPassword(data))
 			}
 			return await resp.json()
 		}).then(body => {

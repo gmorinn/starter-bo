@@ -2,7 +2,7 @@ import React from "react";
 import { Checkbox, TableCell, TableHead, TableRow, Box, TableSortLabel } from "@mui/material";
 import { visuallyHidden } from '@mui/utils'
 
-const EnhancedTableHead = props => {
+const DashboardHeader = props => {
 
     const { data, setSelected, order, setOrder, setOrderBy, orderBy, numSelected, rowCount, headCells } = props
 
@@ -64,4 +64,4 @@ const EnhancedTableHead = props => {
     );
   }
 
-export default EnhancedTableHead
+export default DashboardHeader

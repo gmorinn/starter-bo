@@ -75,39 +75,35 @@ const FormProduct = ({ add, edit, formData }) => {
     const onSubmit = data => mutate(data);
 
     return (
-        <>
-        <div className="mt-5">
-            <form onSubmit={handleSubmit(onSubmit)} className="d-flex flex-column">
-                <Grid container rowSpacing={5} columnSpacing={{ xs: 2, sm: 5, md: 10, xl: 20 }}>
-                    <Grid item md={6} className="mb-3">
-                        <UseFormGroup bind={name} control={control} />
-                        {errors.name?.type === 'required' && <span className="text-danger">Required</span>}
-                        {errors.name?.type === 'min' && <span className="text-danger">3 minimum</span>}
-                    </Grid>
-
-                    <Grid item md={6} className="mb-3">
-                        <UseFormGroup 
-                            select
-                            bind={category}
-                            control={control}
-                            enums={[
-                                {value: "men", display: "Men"},
-                                {value: "women", display: "Women"},
-                                {value: "sneaker", display: "Sneaker"},
-                                {value: "hat", display: "Hat"},
-                                {value: "jacket", display: "Jacket"},
-                            ]}
-                        />
-                        {errors.category?.type === 'required' && <span className="text-danger">Required</span>}
-                    </Grid>
+        <form onSubmit={handleSubmit(onSubmit)} className="d-flex flex-column mt-5">
+            <Grid container rowSpacing={5} columnSpacing={{ xs: 2, sm: 5, md: 10, xl: 20 }}>
+                <Grid item md={6} className="mb-3">
+                    <UseFormGroup bind={name} control={control} />
+                    {errors.name?.type === 'required' && <span className="text-danger">Required</span>}
+                    {errors.name?.type === 'min' && <span className="text-danger">3 minimum</span>}
                 </Grid>
-                <Button size="small" className="w-50 mx-auto px-5 pt-3 pb-3 mb-2" type='submit' variant="contained" disabled={isLoading}>
-                    {isLoading ? <Loader /> : <>{add ? "Add Product" : "Edit Product"}</>}
-                </Button>
-                {isError && <span className="text-danger text-center">{error}</span>}
-            </form>
-        </div>
-        </>
+
+                <Grid item md={6} className="mb-3">
+                    <UseFormGroup 
+                        select
+                        bind={category}
+                        control={control}
+                        enums={[
+                            {value: "men", display: "Men"},
+                            {value: "women", display: "Women"},
+                            {value: "sneaker", display: "Sneaker"},
+                            {value: "hat", display: "Hat"},
+                            {value: "jacket", display: "Jacket"},
+                        ]}
+                    />
+                    {errors.category?.type === 'required' && <span className="text-danger">Required</span>}
+                </Grid>
+            </Grid>
+            <Button size="small" className="w-50 mx-auto px-5 pt-3 pb-3 mb-2" type='submit' variant="contained" disabled={isLoading}>
+                {isLoading ? <Loader /> : <>{add ? "Add Product" : "Edit Product"}</>}
+            </Button>
+            {isError && <span className="text-danger text-center">{error}</span>}
+        </form>
     )
 }
 

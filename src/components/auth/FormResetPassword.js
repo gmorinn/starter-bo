@@ -7,20 +7,20 @@ import useInput from "../../Hooks/useInput.js";
 import { useMutation } from "react-query";
 import useRouter from "../../Hooks/useRouter.js";
 import { toast } from 'react-toastify';
-import { useApi } from "../../Hooks/useApi";
+import { useAuth } from "../../Hooks/useAuth";
 import Loader from '../Loader'
 import UseFormGroup from "../../Hooks/useForm.js";
 
 const FormResetPassword = () => {
 
     const router = useRouter()
-    const { Fetch } = useApi()
+    const { resetPassword } = useAuth()
 
     const resetPasswordWithCode = async (data) => {
-        await Fetch('/v1/bo/email-exist/code', "POST", data, true)
+        await resetPassword(data)
             .then(res => {
-                if (res?.success && res.exist) console.log("succeed!")
-                else if (res?.success && !res.exist) { throw "Email doesn't exist" }
+                if (res?.success && res.success) console.log("succeed!")
+                else { throw "Email or code doesn't exist" }
             })
     }
 
@@ -36,12 +36,13 @@ const FormResetPassword = () => {
                 draggable: true,
                 progress: undefined,
                 });
-            router.push('/')
+            router.push('/sign')
         },
     })
 
     const schema = yup.object({
         password: yup.string().required().min(7),
+        email: yup.string().email().required(),
         code: yup.string().required().length(5),
         confirm_password: yup.string().required().min(7)
             .oneOf([yup.ref('password'), null], 'Password is different.'),
@@ -51,6 +52,7 @@ const FormResetPassword = () => {
         resolver: yupResolver(schema)
     });
 
+    const email = useInput("", "email", "email", "Email...", "w-100")
     const password = useInput("", "password", "password", "Password...", "w-100")
     const confirm_password = useInput("", "confirm_password", "password", "Confirm password...", "w-100")
     const code = useInput("", "code", "text", "Secret code...", "w-100")
@@ -62,6 +64,11 @@ const FormResetPassword = () => {
         <div className="mt-5">
             <form onSubmit={handleSubmit(onSubmit)} className="d-flex flex-column">
                 <Grid container rowSpacing={5} columnSpacing={{ xs: 2, sm: 5, md: 10, xl: 20 }}>
+                    <Grid item md={12} className="mb-1">
+                        <UseFormGroup bind={email} control={control} />
+                        {errors.email?.type === 'required' && <span className="mb-2">Required</span>}
+                        {errors.email?.type === 'email' && <span className="mb-2">Wrong format</span>}
+                    </Grid>
                     <Grid item md={12} className="mb-1">
                         <UseFormGroup bind={password} control={control} />
                         {errors.password?.type === 'required' && <span className="text-danger">Required</span>}
@@ -79,7 +86,6 @@ const FormResetPassword = () => {
                         {errors.code?.type === 'length' && <span className="text-danger">Wrong code</span>}
                     </Grid>
                 </Grid>
-
                 {isError && <span className="text-danger">{error}</span>}
                 <Button size="small" className="w-100 px-5 pt-3 pb-3 mb-2" type='submit' variant="contained" disabled={isLoading}>
                     {isLoading ? <Loader /> : "Reset Password"}
