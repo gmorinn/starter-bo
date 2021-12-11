@@ -3,8 +3,10 @@ import { Toolbar, Typography, Tooltip, IconButton, Button } from "@mui/material"
 import { alpha } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import { useHistory } from "react-router-dom";
 
 const DashboardHeaderFilter = ({ numSelected, title, deleteItems, add }) => {
+  const history = useHistory()
     return (
       <Toolbar
         sx={{
@@ -35,7 +37,7 @@ const DashboardHeaderFilter = ({ numSelected, title, deleteItems, add }) => {
             {title}
           </Typography>
         )}
-        <Button variant="contained" onClick={add}>
+        <Button variant="contained" onClick={() => history.push(add)}>
           Add
         </Button>
         {numSelected > 0 ? (

@@ -1,9 +1,10 @@
 import React from "react";
 import { Checkbox, IconButton, TableCell, TableRow } from "@mui/material";
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import { useHistory } from "react-router-dom";
 
-const DashboardContent = ({ selected, isItemSelected, row, labelId, redirect, setSelected, children }) => {
-
+const DashboardContent = ({ selected, isItemSelected, row, labelId, edit, setSelected, children }) => {
+    const history = useHistory()
     const handleClick = (event, id) => {
       const selectedIndex = selected.indexOf(id);
       let newSelected = [];
@@ -48,7 +49,7 @@ const DashboardContent = ({ selected, isItemSelected, row, labelId, redirect, se
             <IconButton
             aria-label="edit page"
             size="small"
-            onClick={redirect}
+            onClick={() => history.push(edit)}
             >
             <ModeEditIcon fontSize="small"/>
           </IconButton>

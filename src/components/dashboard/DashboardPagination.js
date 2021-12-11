@@ -77,7 +77,7 @@ const DashboardPagination = (props) => {
         <TableFooter>
             <TableRow >
                 <TablePagination
-                    rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                    rowsPerPageOptions={[5, 10, 25, { label: 'All', value: total }]}
                     colSpan={12}
                     count={total}
                     rowsPerPage={rowsPerPage}

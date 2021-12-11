@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Table, TableBody, TableCell, TableContainer, TableRow, Paper, Checkbox, IconButton } from '@mui/material';
+import { Box, TableCell } from '@mui/material';
 import { useApi } from '../../Hooks/useApi';
-import * as sort from '../../Hooks/useSort'
-import DashboardPagination from '../dashboard/DashboardPagination'
-import DashboardHeader from '../dashboard/DashboardHeader'
-import DashboardHeaderFilter from '../dashboard/DashboardHeaderFilter';
-import useRouter from '../../Hooks/useRouter'
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import DashboardTable from '../dashboard/DashboardTable';
+import useUpdateEffect from '../../Hooks/useUpdateEffect'
+import DashboardContent from '../dashboard/DashboardContent';
 
 const headCells = [
   {
@@ -48,113 +45,77 @@ const headCells = [
 ];
 
 const Users = () => {
-  const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('firstname');
-  const [selected, setSelected] = useState([]);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const router = useRouter()
-
   const [data, setData] = useState([])
+  const [total, setTotal] = useState(0);
   const { Fetch } = useApi()
+  const [selected, setSelected] = useState([]);
+
+  //// PAGINATION ////
+  const [page, setPage] = useState(0);
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('');
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  ////////////////////
 
   const deleteItems = () => {
       Fetch("/v1/bo/users/remove", "PATCH", {tab: selected}, true)
         .then(res => res?.success && setSelected([]))
         .then(() => listItem())
     }
-    
+
     const listItem = () => {
-      Fetch("/v1/bo/users")
-        .then(res => res.success && res.users && res.users.length > 0 && setData(res.users))
+      Fetch(`/v1/bo/users/${page*rowsPerPage}/${rowsPerPage}?direction=${order}&field=${orderBy}`)
+      .then(res => {
+        if (res?.success && res.success && res.users && res.users.length > 0) {
+          setData(res.users)
+          setTotal(res.count)
+        }
+      })
     }
 
-  useEffect(() => {
-    Fetch(`/v1/bo/users`)
-        .then(res => res?.success && res.users && res.users.length > 0 && setData(res.users))
+    useUpdateEffect(() => {
+      listItem()
+    }, [rowsPerPage, page, order, orderBy])
+
+    useEffect(() => {
+      listItem()
       return () => setData([])
-    // eslint-disable-next-line
-  }, [])
-
-  const handleClick = (event, id) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
+      // eslint-disable-next-line
+    }, [])
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
-          <DashboardHeaderFilter 
-            title="Users"
-            numSelected={selected.length} 
-            deleteItems={deleteItems}
-            add={() => router.push('/user/add')}
-          />
-          <TableContainer>
-            <Table
-              sx={{ minWidth: 750 }}
-              aria-labelledby="tableTitle"
-              size={'medium'}
-            >
-            {/* ********* HEADER ****** */}
-            <DashboardHeader
-              data={data}
-              setSelected={setSelected}
-              headCells={headCells}
-              numSelected={selected.length}
-              order={order}
-              setOrder={setOrder}
-              setOrderBy={setOrderBy}
-              orderBy={orderBy}
-              rowCount={data.length}
-            />
-
-            {/* *********** VALUES ************** */}
-            <TableBody>
-              {sort.stableSort(data, sort.getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = selected.indexOf(row.id) !== -1;;
-                  const labelId = `enhanced-table-checkbox-${index}`;
-                  return (
-                    <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, row.id)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      selected={isItemSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
-                      </TableCell>
+      <DashboardTable
+        add="/users/add"
+        deleteItems={deleteItems}
+        order={order}
+        total={total}
+        orderBy={orderBy}
+        setOrderBy={setOrderBy}
+        rowsPerPage={rowsPerPage}
+        setRowsPerPage={setRowsPerPage}
+        page={page}
+        setPage={setPage}
+        setOrder={setOrder}
+        selected={selected}
+        setSelected={setSelected}
+        data={data}
+        headCells={headCells}
+      >
+        {data && data.length > 0 && data.map((row, index) => {
+            return (
+              <DashboardContent
+                selected={selected}
+                setSelected={setSelected} 
+                row={row}
+                key={row.id}
+                isItemSelected={selected.indexOf(row.id) !== -1}
+                labelId={`checkbox-${index}`}
+                edit={`/user/edit/${row.id}`}
+              >
                       <TableCell
                         component="th"
-                        id={labelId}
+                        id={`checkbox-${index}`}
                         scope="row"
                         padding="none"
                       >
@@ -165,41 +126,12 @@ const Users = () => {
                       <TableCell align="right">{row.phone && "+"+row.phone}</TableCell>
                       <TableCell align="right">{row.birthday}</TableCell>
                       <TableCell align="right">{row.role}</TableCell>
-                      <TableCell align="center">
-                          <IconButton
-                            aria-label="edit page"
-                            size="small"
-                            onClick={() => router.push(`/user/edit/${row.id}`)}
-                          >
-                            <ModeEditIcon fontSize="small"/>
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: 53 * emptyRows,
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-            {/* ****** PAGINATION ********* */}
-            <DashboardPagination 
-              data={data}
-              rowsPerPage={rowsPerPage}
-              setPage={setPage}
-              setRowsPerPage={setRowsPerPage}
-              page={page}
-            />
-          </Table>
-        </TableContainer>
-      </Paper>
+                      </DashboardContent>
+            );
+        })}
+      </DashboardTable>
     </Box>
-    )
+  );
 }
 
 export default Users
