@@ -35,6 +35,9 @@ const App = () => {
     [darkMode],
   );
 
+  useEffect(() => {
+    localStorage.setItem("isDark", darkMode)
+  }, [darkMode])
 
   useEffect(() => {
     user && user.id ? Fetch(`/v1/bo/user/${user.id}`).then(res => {

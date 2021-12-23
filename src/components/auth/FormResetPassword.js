@@ -20,6 +20,7 @@ const FormResetPassword = () => {
         await resetPassword(data)
             .then(res => {
                 if (res?.success && res.success) console.log("succeed!")
+                // eslint-disable-next-line
                 else { throw "Email or code doesn't exist" }
             })
     }

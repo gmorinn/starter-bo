@@ -53,7 +53,7 @@ const Users = () => {
   //// PAGINATION ////
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('');
+  const [orderBy, setOrderBy] = useState('firstname');
   const [rowsPerPage, setRowsPerPage] = useState(10);
   ////////////////////
 
@@ -64,7 +64,7 @@ const Users = () => {
     }
 
     const listItem = () => {
-      Fetch(`/v1/bo/users/${page*rowsPerPage}/${rowsPerPage}?direction=${order}&field=${orderBy}`)
+      Fetch(`/v1/bo/users/${page*rowsPerPage}/${rowsPerPage}?field=${orderBy}&direction=${order}`)
       .then(res => {
         if (res?.success && res.success && res.users && res.users.length > 0) {
           setData(res.users)
@@ -86,7 +86,7 @@ const Users = () => {
   return (
     <Box sx={{ width: '100%' }}>
       <DashboardTable
-        add="/users/add"
+        add="/user/add"
         deleteItems={deleteItems}
         order={order}
         total={total}

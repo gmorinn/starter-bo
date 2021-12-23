@@ -8,7 +8,7 @@ const DashboardHeader = props => {
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
-        setOrder(isAsc ? 'desc' : 'asc');
+        setOrder((isAsc || order === "asc") ? 'desc' : 'asc');
         setOrderBy(property);
     };
 

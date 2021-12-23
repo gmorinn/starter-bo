@@ -15,7 +15,7 @@ import AlternateEmailIcon from '@mui/icons-material/AlternateEmail'
 const FormLogin = () => {
 
     const router = useRouter()
-    const { login } = useAuth()
+    const { loginBo } = useAuth()
 
     const {isError, isLoading, mutate, error } = useMutation(api.SigninWithMailAndPassword, {
         onSuccess: () => {
@@ -45,7 +45,7 @@ const FormLogin = () => {
     const email = useInput("", "email", "email", "Email...", "w-100")
     const password = useInput("", "password", "password", "Password...", "w-100")
 
-    const onSubmit = data => mutate({ email: data.email, password: data.password, login});
+    const onSubmit = data => mutate({ email: data.email, password: data.password, loginBo});
 
     return (
         <>

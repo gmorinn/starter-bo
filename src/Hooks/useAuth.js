@@ -155,6 +155,36 @@ function useProvideAuth() {
 		})
 	};
 
+	const loginBo = async (email, password) => {
+		setLoad(true)
+		return await fetch(`${api}/bo/signin`, {
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${getOAuthToken()}`,
+			},
+			method: "POST",
+			body: JSON.stringify({
+				email: email,
+				password: password
+			})
+		}).then(async resp => {
+			if (resp.status === 403) {
+				await getAuthorization().then(async () => await login(email, password))
+			}
+			return await resp.json()
+		}).then(body => {
+			setLoad(false)
+			setAccessToken(body.access_token);
+			setRefreshToken(body.refresh_token);
+			setUser(getUser(body.access_token));
+			return body;
+		})
+		.catch(err => {
+			console.error(err)
+			return err
+		})
+	};
+
 	const signWithProvider = async (payload) => {
 		setLoad(true)
 		return await fetch(`${api}/sign-providers`, {
@@ -302,6 +332,7 @@ function useProvideAuth() {
 		signWithProvider,
 		load,
 		user,
+		loginBo,
 		signup,
 		login,
 		logout,

@@ -111,25 +111,25 @@ const FormUser = ({ add, edit, formData }) => {
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="d-flex flex-column">
             <Grid container rowSpacing={5} columnSpacing={{ xs: 2, sm: 5, md: 10, xl: 20 }}>
-                <Grid item md={6} className="mb-3">
+                <Grid item md={6} className="mb-3 w-100">
                     <UseFormGroup bind={firstname} control={control} />
                     {errors.firstname?.type === 'required' && <span className="text-danger">Required</span>}
                     {errors.firstname?.type === 'min' && <span className="text-danger">3 minimum</span>}
                 </Grid>
 
-                <Grid item md={6} className="mb-3">
+                <Grid item md={6} className="mb-3 w-100">
                     <UseFormGroup bind={lastname} control={control} />
                     {errors.lastname?.type === 'required' && <span className="text-danger">Required</span>}
                     {errors.lastname?.type === 'min' && <span className="text-danger">3 minimum</span>}
                 </Grid>
 
-                <Grid item md={6} className="mb-3">
+                <Grid item md={6} className="mb-3 w-100">
                     <UseFormGroup bind={email} control={control} />
                     {errors.email?.type === 'required' && <span className="text-danger">Required</span>}
                     {errors.email?.type === 'email' && <span className="text-danger">Wrong format</span>}
                 </Grid>
 
-                <Grid item md={6} className="mb-3">
+                <Grid item md={6} className="mb-3 w-100">
                     <UseFormGroup 
                         date
                         bind={birthday}
@@ -138,11 +138,11 @@ const FormUser = ({ add, edit, formData }) => {
                     />
                 </Grid>
 
-                <Grid item md={6} className="mb-3">
+                <Grid item md={6} className="mb-3 w-100">
                     <UseFormGroup bind={phone} phone control={control}/>
                 </Grid>
 
-                <Grid item md={6} className="mb-3">
+                <Grid item md={6} className="mb-3 w-100">
                     <UseFormGroup 
                         select
                         bind={role}
@@ -157,12 +157,12 @@ const FormUser = ({ add, edit, formData }) => {
                 </Grid>
                 { add &&
                     <>
-                        <Grid item md={6} className="mb-3">
+                        <Grid item md={6} className="mb-3 w-100">
                             <UseFormGroup bind={password} control={control} />
                             {errors.password?.type === 'required' && <span className="text-danger">Required</span>}
                             {errors.password?.type === 'min' && <span className="text-danger">Too small</span>}
                         </Grid>
-                        <Grid item md={6} className="mb-3">
+                        <Grid item md={6} className="mb-3 w-100">
                             <UseFormGroup bind={confirm_password} control={control} />
                             {errors.confirm_password?.type === 'required' && <span className="text-danger">Required</span>}
                             {errors.confirm_password?.type === 'min' && <span className="text-danger">Too small</span>}

@@ -9,8 +9,8 @@ const AddProduct = () => {
 
     return (
         <>
-            <Card className="mb-3">
-				<Box className="d-flex justify-content-between p-4">
+            <Card className="">
+				<Box className="d-flex justify-content-between p-3">
 					<h5>New Product</h5>
 					<Button className="mx-2" variant="contained" onClick={() => router.push('/products')}>
 						Go back

@@ -15,7 +15,7 @@ const Homepage = () => {
   return (
     <>
         <Header />
-        <FormControlLabel onChange={() => setMode(v => !v)} control={<Switch value={mode} />} label="Dark" className="p-3" />
+        <FormControlLabel onChange={() => setMode(v => !v)} control={<Switch value={mode} checked={mode}/>} label="Dark" className="p-3" />
         <Route path="/" exact component={Users} />
         <RoutesUsers />
         <RoutesProducts />

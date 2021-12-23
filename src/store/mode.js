@@ -2,5 +2,5 @@ import { atom } from "recoil";
 
 export const darkModeAtom = atom({
     key: 'darkModeAtom',
-    default: false
+    default: JSON.parse(localStorage.getItem("isDark")) || false
 })

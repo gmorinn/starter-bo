@@ -4,14 +4,17 @@ import React from "react";
 import { Controller } from "react-hook-form";
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import PhoneInput from "react-phone-input-2";
+import InputFileBrowser from "../utils/InputFile";
 
-const UseFormGroup = ({ bind, phone, select, date, control, ...other }) => {
+const UseFormGroup = ({ bind, phone, select, date, number, file, control, ...other }) => {
     return (
         <FormControl className="mt-5 w-100">
             {
                 phone  ?  <InputPhone bind={bind} control={control} /> :
                 select ?  <InputSelect bind={bind} control={control} {...other} /> :
-                date   ?  <InputDate bind={bind} control={control} {...other} />
+                date   ?  <InputDate bind={bind} control={control} {...other} /> :
+                number ?  <InputNumber bind={bind} control={control} {...other} /> :
+                file   ?  <InputFile bind={bind} control={control} {...other} />
                        :  <InputText bind={bind} control={control} />
             }
         </FormControl>
@@ -36,6 +39,17 @@ const InputText = ({ bind, control }) => {
             {...bind.bindHookForm}
             control={control}
             render={({ field }) => <Input {...field} {...bind.bindInput} />}
+        />
+    )
+}
+
+const InputNumber = ({ bind, control, ...other }) => {
+    return (
+        <Controller
+            {...bind.bindHookForm}
+            {...other}
+            control={control}
+            render={({ field }) => <TextField {...field} autoComplete='off' {...bind.bindInput} />}
         />
     )
 }
@@ -73,6 +87,16 @@ const InputSelect = ({ bind, control, enums }) => {
                     }
                 </Select>
             }
+        />
+    )
+}
+
+const InputFile = ({ bind, control, ...other }) => {
+    return (
+        <Controller
+            {...bind.bindHookForm}
+            control={control}
+            render={({ field }) => <InputFileBrowser {...field} {...bind.bindInput} {...other} />}
         />
     )
 }

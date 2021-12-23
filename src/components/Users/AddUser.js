@@ -8,19 +8,17 @@ const AddUser = () => {
     const router = useRouter()
 
     return (
-        <>
-            <Card className="mb-3">
-				<Box className="d-flex justify-content-between p-4">
-					<h5>New User</h5>
-					<Button className="mx-2" variant="contained" onClick={() => router.push('/users')}>
-						Go back
-					</Button>
-				</Box>
-				<CardContent>
-					<FormUser add />
-				</CardContent>
-			</Card>
-        </>
+		<Card className="">
+			<Box className="d-flex justify-content-between p-3">
+				<h5>New User</h5>
+				<Button className="mx-2" variant="contained" onClick={() => router.push('/users')}>
+					Go back
+				</Button>
+			</Box>
+			<CardContent>
+				<FormUser add />
+			</CardContent>
+		</Card>
     )
 }
 

@@ -35,7 +35,7 @@ const Products = () => {
   //// PAGINATION ////
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('');
+  const [orderBy, setOrderBy] = useState('name');
   const [rowsPerPage, setRowsPerPage] = useState(10);
   ////////////////////
 
@@ -44,7 +44,6 @@ const Products = () => {
       .then(res => res?.success && setSelected([]))
       .then(() => listItem())
   }
-
   const listItem = () => {
     Fetch(`/v1/bo/products/${page*rowsPerPage}/${rowsPerPage}?direction=${order}&field=${orderBy}`)
       .then(res => {
