@@ -14,7 +14,7 @@ const UseFormGroup = ({ bind, phone, select, date, number, file, control, ...oth
                 select ?  <InputSelect bind={bind} control={control} {...other} /> :
                 date   ?  <InputDate bind={bind} control={control} {...other} /> :
                 number ?  <InputNumber bind={bind} control={control} {...other} /> :
-                file   ?  <InputFile bind={bind} control={control} {...other} />
+                file   ?  <InputFile bind={bind} control={control} {...other}  />
                        :  <InputText bind={bind} control={control} />
             }
         </FormControl>
@@ -50,6 +50,17 @@ const InputNumber = ({ bind, control, ...other }) => {
             {...other}
             control={control}
             render={({ field }) => <TextField {...field} autoComplete='off' {...bind.bindInput} />}
+        />
+    )
+}
+
+const InputFile = ({ bind, control, ...other }) => {
+    return (
+        <Controller
+            {...bind.bindHookForm}
+            {...other}
+            control={control}
+            render={({ field }) => <InputFileBrowser value={bind.value} set={bind.setValue} {...field} {...bind.bindInput} />}
         />
     )
 }
@@ -91,14 +102,5 @@ const InputSelect = ({ bind, control, enums }) => {
     )
 }
 
-const InputFile = ({ bind, control, ...other }) => {
-    return (
-        <Controller
-            {...bind.bindHookForm}
-            control={control}
-            render={({ field }) => <InputFileBrowser {...field} {...bind.bindInput} {...other} />}
-        />
-    )
-}
 
 export default UseFormGroup

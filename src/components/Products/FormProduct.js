@@ -11,20 +11,31 @@ import { useApi } from "../../Hooks/useApi";
 import Err from '../../utils/humanResp'
 import useRouter from "../../Hooks/useRouter";
 import UseFormGroup from "../../Hooks/useForm";
+import InputFileBrowser from "../../utils/InputFile";
+import { useState } from "react";
 
 const defaultForm = {
     name: "",
     category: "men",
     price: 0.0,
+    cover: "",
 }
 
 const FormProduct = ({ add, edit, formData }) => {
     const { Fetch } = useApi()
     const router = useRouter()
+    
+    const name = useInput(formData && formData?.name ? formData.name : "", "name", "text", "Name...", "w-100")
+    const category = useInput(formData && formData?.category ? formData.category : "men", "category", "text", "Category...", "w-100")
+    const price = useInput(formData && formData?.price ? formData.price : 0.0, "price", "number", "Price", "w-100")
+    const cover = useInput(formData && formData?.cover ? formData.cover : "", "cover", "text", "", "w-100", {
+        id:"input_image",
+        accept:"image/png",
+    })
 
     const addProduct = async (data) => {
-        if (add && !edit) {
-            await Fetch('/v1/bo/product/add', "POST", data, true)
+        if (add && !edit && data) {
+            await Fetch('/v1/bo/product/add', "POST", {name: data.name, category: data.category, price: data.price, cover: cover.value}, true)
             .then(res => {
                 if (res?.success) console.log("succeed!")
                 else { throw Err(res) }
@@ -56,7 +67,6 @@ const FormProduct = ({ add, edit, formData }) => {
     const schema = yup.object({
         name: yup.string().min(3).required(),
         price: yup.number().positive().required(),
-        file: yup.mixed().required(),
         category: yup.string().oneOf(["men", "women", "jacket", "hat", "sneaker"]).required(),
       });
 
@@ -71,10 +81,8 @@ const FormProduct = ({ add, edit, formData }) => {
         }
       }, [isSubmitSuccessful, reset]);
     
-    const name = useInput(formData && formData?.name ? formData.name : "", "name", "text", "Name...", "w-100")
-    const category = useInput(formData && formData?.category ? formData.category : "men", "category", "text", "Category...", "w-100")
-    const price = useInput(formData && formData?.price ? formData.price : 0.0, "price", "number", "Price", "w-100")
-    const file = useInput(formData && formData?.file ? formData.file : '', "cover", "file", "", "w-100")
+
+    console.log(cover)
 
     const onSubmit = data => mutate(data);
 
@@ -110,8 +118,8 @@ const FormProduct = ({ add, edit, formData }) => {
                 </Grid>
 
                 <Grid item md={6} className="mb-3 w-100">
-                    <UseFormGroup bind={file} file control={control} number />
-                    {errors.file?.type === 'required' && <span className="text-danger">Required</span>}
+                    <UseFormGroup bind={cover} control={control} file />
+                    {errors.cover?.type === 'required' && <span className="text-danger">Required</span>}
                 </Grid>
     
             </Grid>
