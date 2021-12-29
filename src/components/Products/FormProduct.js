@@ -12,7 +12,6 @@ import Err from '../../utils/humanResp'
 import useRouter from "../../Hooks/useRouter";
 import UseFormGroup from "../../Hooks/useForm";
 import InputFileBrowser from "../../utils/InputFile";
-import { useState } from "react";
 
 const defaultForm = {
     name: "",
@@ -28,20 +27,20 @@ const FormProduct = ({ add, edit, formData }) => {
     const name = useInput(formData && formData?.name ? formData.name : "", "name", "text", "Name...", "w-100")
     const category = useInput(formData && formData?.category ? formData.category : "men", "category", "text", "Category...", "w-100")
     const price = useInput(formData && formData?.price ? formData.price : 0.0, "price", "number", "Price", "w-100")
-    const cover = useInput(formData && formData?.cover ? formData.cover : "", "cover", "text", "", "w-100", {
+    const cover = useInput(formData && formData?.cover ? formData.cover : "", "cover", "file", "", "w-100", {
         id:"input_image",
-        accept:"image/png",
+        accept:"image/png image/jpeg",
     })
 
-    const addProduct = async (data) => {
-        if (add && !edit && data) {
-            await Fetch('/v1/bo/product/add', "POST", {name: data.name, category: data.category, price: data.price, cover: cover.value}, true)
+    const addProduct = async ({name, category, price}) => {
+        if (add && !edit) {
+            await Fetch('/v1/bo/product/add', "POST", {product: { name, category, price, cover: cover.value }}, true)
             .then(res => {
                 if (res?.success) console.log("succeed!")
                 else { throw Err(res) }
             })
         } else {
-            await Fetch(`/v1/bo/product/${router.query.id}`, "PUT", { product: data }, true)
+            await Fetch(`/v1/bo/product/${router.query.id}`, "PUT", { product: { name, category, price, cover: cover.value } }, true)
                 .then(res => {
                     if (res?.success) console.log("succeed!")
                     else { throw Err(res) }
@@ -68,7 +67,7 @@ const FormProduct = ({ add, edit, formData }) => {
         name: yup.string().min(3).required(),
         price: yup.number().positive().required(),
         category: yup.string().oneOf(["men", "women", "jacket", "hat", "sneaker"]).required(),
-      });
+    });
 
     const { handleSubmit, control, reset, formState: { errors, isSubmitSuccessful } } = useForm({
         resolver: yupResolver(schema),
@@ -80,9 +79,7 @@ const FormProduct = ({ add, edit, formData }) => {
           reset(defaultForm);
         }
       }, [isSubmitSuccessful, reset]);
-    
 
-    console.log(cover)
 
     const onSubmit = data => mutate(data);
 
@@ -118,10 +115,9 @@ const FormProduct = ({ add, edit, formData }) => {
                 </Grid>
 
                 <Grid item md={6} className="mb-3 w-100">
-                    <UseFormGroup bind={cover} control={control} file />
-                    {errors.cover?.type === 'required' && <span className="text-danger">Required</span>}
+                    <InputFileBrowser {...cover.bindFile} />
                 </Grid>
-    
+
             </Grid>
             <Button size="small" className="w-50 mx-auto px-5 pt-3 pb-3 mb-2" type='submit' variant="contained" disabled={isLoading}>
                 {isLoading ? <Loader /> : <>{add ? "Add Product" : "Edit Product"}</>}

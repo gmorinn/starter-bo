@@ -17,7 +17,16 @@ const useInput = (initialValue, name, type, placeholder, className, other = {}) 
         name: name,
     }
 
-    return {bindInput, reset, bindHookForm, value, setValue}
+    const bindFile = {
+        type: 'file',
+        className: className,
+        set: setValue,
+        value,
+        other
+    }
+
+
+    return {bindInput, reset, bindHookForm, value, setValue, bindFile}
 };
 
 export default useInput;

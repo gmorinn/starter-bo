@@ -4,7 +4,6 @@ import React from "react";
 import { Controller } from "react-hook-form";
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import PhoneInput from "react-phone-input-2";
-import InputFileBrowser from "../utils/InputFile";
 
 const UseFormGroup = ({ bind, phone, select, date, number, file, control, ...other }) => {
     return (
@@ -13,8 +12,7 @@ const UseFormGroup = ({ bind, phone, select, date, number, file, control, ...oth
                 phone  ?  <InputPhone bind={bind} control={control} /> :
                 select ?  <InputSelect bind={bind} control={control} {...other} /> :
                 date   ?  <InputDate bind={bind} control={control} {...other} /> :
-                number ?  <InputNumber bind={bind} control={control} {...other} /> :
-                file   ?  <InputFile bind={bind} control={control} {...other}  />
+                number ?  <InputNumber bind={bind} control={control} {...other} />
                        :  <InputText bind={bind} control={control} />
             }
         </FormControl>
@@ -54,16 +52,14 @@ const InputNumber = ({ bind, control, ...other }) => {
     )
 }
 
-const InputFile = ({ bind, control, ...other }) => {
-    return (
-        <Controller
-            {...bind.bindHookForm}
-            {...other}
-            control={control}
-            render={({ field }) => <InputFileBrowser value={bind.value} set={bind.setValue} {...field} {...bind.bindInput} />}
-        />
-    )
-}
+// const InputFile = ({ bind, control }) => {
+//     return (
+//         <Controller
+//             control={control}
+//             render={({ field }) => <InputFileBrowser value={bind.value} set={bind.setValue} {...field} {...bind.bindInput} />}
+//         />
+//     )
+// }
 
 const InputDate = ({ bind, format, label }) => {
     return (
