@@ -18,11 +18,10 @@ const useInput = (initialValue, name, type, placeholder, className, other = {}) 
     }
 
     const bindFile = {
-        type: 'file',
         className: className,
         set: setValue,
         value,
-        other
+        ...other
     }
 
 

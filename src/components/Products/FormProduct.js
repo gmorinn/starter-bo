@@ -29,7 +29,7 @@ const FormProduct = ({ add, edit, formData }) => {
     const price = useInput(formData && formData?.price ? formData.price : 0.0, "price", "number", "Price", "w-100")
     const cover = useInput(formData && formData?.cover ? formData.cover : "", "cover", "file", "", "w-100", {
         id:"input_image",
-        accept:"image/png image/jpeg",
+        accept:"image/png image/jpeg image/jpg",
     })
 
     const addProduct = async ({name, category, price}) => {
@@ -115,7 +115,7 @@ const FormProduct = ({ add, edit, formData }) => {
                 </Grid>
 
                 <Grid item md={6} className="mb-3 w-100">
-                    <InputFileBrowser {...cover.bindFile} />
+                    <InputFileBrowser w={257} h={350} {...cover.bindFile} />
                 </Grid>
 
             </Grid>

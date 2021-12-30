@@ -28,6 +28,8 @@ const Err = res => {
 			// eslint-disable-next-line
 			case res.message.includes(`must match the regexp \"\\\\d\"`):
 				return "Password must contain at least one number."
+			case res.message.includes(`Wrong format`):
+				return "This format is not allowed."
 			default:
 				break;
 		}
